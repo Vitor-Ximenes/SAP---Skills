@@ -2,28 +2,13 @@
   "name": "vitor-sap-skills",
   "version": "2.4.1",
   "description": "SAP development skills with evidence-tracked public-source and package-registry verification",
-  "repository": "https://github.com/Vitor-Ximenes/SAP---Skills",
   "owner": {
     "name": "Vitor Ximenes"
   },
-  "metadata": {
-    "version": "2.4.1",
-    "last_updated": "2026-08-08",
-    "total_skills": 40,
-    "categories": [
-      "abap",
-      "ai",
-      "btp",
-      "cap",
-      "data-analytics",
-      "hana",
-      "tooling",
-      "ui-development"
-    ]
-  },
-  "plugins": [ {
-  "name": "sap-rap-skills",
-  "source": "./rap-skills",
+  "plugins": [
+    {
+      "name": "sap-rap-skills",
+      "source": "./rap-skills",
   "description": "SAP RAP development skills for managed and unmanaged RAP development.",
   "version": "1.0.0",
   "category": "rap",
