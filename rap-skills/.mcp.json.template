@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "vsp-btp": {
+      "command": "/usr/local/bin/vsp",
+      "env": {
+        "SAP_URL": "https://your-sap-host:44300",
+        "SAP_USER": "YOUR_USER",
+        "SAP_PASSWORD": "YOUR_PASSWORD",
+        "SAP_CLIENT": "001"
+      }
+    }
+  }
+}

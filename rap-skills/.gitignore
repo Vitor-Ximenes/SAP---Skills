@@ -1,0 +1,13 @@
+# MCP credentials — never commit real credentials
+.mcp.json
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
