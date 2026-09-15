@@ -1,0 +1,21 @@
+# SAP MCP Config Candidate
+
+# Use this as a review artifact, not as a blind rewrite target.
+# Exact pins must match references/sap-mcp-inventory.json.
+
+{
+  "example-sap-mcp": {
+    "command": "npx",
+    "args": ["-y", "@scope/package@1.2.3"],
+    "env": {
+      "EXAMPLE_BASE_URL": "${EXAMPLE_BASE_URL}"
+    }
+  }
+}
+
+Review checklist:
+- [ ] Package appears in `references/sap-mcp-inventory.json`
+- [ ] Package uses an exact version, not `@latest` or a range
+- [ ] Version satisfies the SAP cooldown or has a recorded exception
+- [ ] Credential env vars are least-privilege and not committed elsewhere
+- [ ] `npm run validate:mcp-security` passes

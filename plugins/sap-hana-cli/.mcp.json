@@ -1,0 +1,15 @@
+{
+  "hana-mcp-server": {
+    "command": "npx",
+    "args": ["-y", "hana-mcp-server@0.3.4"],
+    "env": {
+      "HANA_HOST": "${HANA_HOST}",
+      "HANA_PORT": "${HANA_PORT}",
+      "HANA_USER": "${HANA_USER}",
+      "HANA_PASSWORD": "${HANA_PASSWORD}",
+      "HANA_ENCRYPT": "${HANA_ENCRYPT:-true}",
+      "HANA_DATABASE": "${HANA_DATABASE:-}",
+      "HANA_CONNECTION_TYPE": "${HANA_CONNECTION_TYPE:-single-container}"
+    }
+  }
+}

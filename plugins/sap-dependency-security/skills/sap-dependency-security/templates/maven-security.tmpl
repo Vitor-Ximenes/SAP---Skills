@@ -1,0 +1,42 @@
+# Maven SAP Security Fragment
+
+# .mvn/maven.config
+# Review before copying into a project.
+--batch-mode
+--no-transfer-progress
+--strict-checksums
+
+# Recommended CI checks:
+# ./mvnw -C -B dependency:tree
+# ./mvnw -C -B org.owasp:dependency-check-maven:check
+# osv-scanner --lockfile=pom.xml
+
+# pom.xml plugin fragment:
+<build>
+  <plugins>
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-enforcer-plugin</artifactId>
+      <version>3.5.0</version>
+      <executions>
+        <execution>
+          <id>enforce</id>
+          <goals>
+            <goal>enforce</goal>
+          </goals>
+          <configuration>
+            <rules>
+              <requireMavenVersion>
+                <version>[3.9.0,)</version>
+              </requireMavenVersion>
+              <requireJavaVersion>
+                <version>[17,)</version>
+              </requireJavaVersion>
+              <banDynamicVersions />
+            </rules>
+          </configuration>
+        </execution>
+      </executions>
+    </plugin>
+  </plugins>
+</build>

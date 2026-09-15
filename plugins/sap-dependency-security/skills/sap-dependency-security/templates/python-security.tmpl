@@ -1,0 +1,22 @@
+# Python SAP Security Template
+
+# Preferred with uv:
+# pyproject.toml + uv.lock
+uv lock
+uv sync --frozen
+uv audit
+
+# If your audit tooling requires requirements.txt output from uv:
+uv export --format requirements-txt --output-file requirements.txt
+pip-audit -r requirements.txt
+
+# requirements.txt with hashes when using pip-tools:
+pip-compile --generate-hashes --output-file requirements.txt pyproject.toml
+pip install --require-hashes -r requirements.txt
+pip-audit -r requirements.txt
+
+Review checklist:
+- [ ] `uv.lock` or hashed `requirements.txt` is committed
+- [ ] Broad extras such as `[all]` are intentional
+- [ ] Deprecated SAP packages are removed, for example `generative-ai-hub-sdk`
+- [ ] Provider SDK additions are reviewed for transitive dependency volume

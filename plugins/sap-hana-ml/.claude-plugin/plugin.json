@@ -1,0 +1,28 @@
+{
+  "name": "sap-hana-ml",
+  "description": "SAP HANA Machine Learning Python Client (hana-ml) development skill. Use when: Building ML solutions with SAP HANA's in-database machine learning using Python hana-ml library for PAL/APL algorithms, DataFrame operations, AutoML, model persistence, and visualization. Keywords: hana-ml, SAP HANA, machine learning, PAL, APL, predictive analytics, HANA DataFrame, ConnectionContext, classification, regression, clustering, time series, ARIMA, gradient boosting, AutoML, SHAP, model storage",
+  "version": "2.4.1",
+  "author": {
+    "name": "Eduard Jiglau",
+    "email": "hello@sap-ai-skills.com",
+    "url": "https://sap-ai-skills.com"
+  },
+  "license": "GPL-3.0",
+  "homepage": "https://sap-ai-skills.com",
+  "repository": "https://github.com/secondsky/sap-skills",
+  "keywords": [
+    "cloud",
+    "database",
+    "hana",
+    "hdi",
+    "python",
+    "sap",
+    "sap-hana-ml",
+    "sql",
+    "sqlscript"
+  ],
+  "category": "hana",
+  "commands": [
+    "./commands/hana-ml-experiment-plan.md"
+  ]
+}

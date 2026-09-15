@@ -1,0 +1,622 @@
+# SAP SAC Custom Widget JSON Schema Reference
+
+Complete reference for the JSON metadata file that defines custom widgets.
+
+**Source**: [SAP Custom Widget Developer Guide](https://help.sap.com/doc/c813a28922b54e50bd2a307b099787dc/release/en-US/CustomWidgetDevGuide_en.pdf) - Section 6.1
+
+---
+
+## Table of Contents
+
+1. [Complete Schema Example](#complete-schema-example)
+2. [Root Object](#root-object)
+3. [Webcomponents Array](#webcomponents-array)
+4. [Properties Object](#properties-object)
+5. [Methods Object](#methods-object)
+6. [Events Object](#events-object)
+7. [DataBindings Object](#databindings-object)
+8. [Custom Types](#custom-types)
+
+---
+
+## Complete Schema Example
+
+```json
+{
+  "id": "com.company.advancedwidget",
+  "version": "1.0.0",
+  "name": "Advanced Custom Widget",
+  "description": "A feature-rich custom widget with data binding",
+  "vendor": "Company Name",
+  "license": "MIT",
+  "icon": "https://example.com/icon.png",
+  "newInstancePrefix": "advWidget",
+  "webcomponents": [
+    {
+      "kind": "main",
+      "tag": "advanced-widget",
+      "url": "https://host.com/widget.js",
+      "integrity": "sha256-abc123...",
+      "ignoreIntegrity": false
+    },
+    {
+      "kind": "styling",
+      "tag": "advanced-widget-styling",
+      "url": "https://host.com/styling.js",
+      "integrity": "sha256-def456...",
+      "ignoreIntegrity": false
+    },
+    {
+      "kind": "builder",
+      "tag": "advanced-widget-builder",
+      "url": "https://host.com/builder.js",
+      "integrity": "sha256-ghi789...",
+      "ignoreIntegrity": false
+    }
+  ],
+  "properties": {
+    "title": {
+      "type": "string",
+      "default": "Widget Title",
+      "description": "The widget title"
+    },
+    "value": {
+      "type": "number",
+      "default": 0,
+      "description": "Numeric value"
+    },
+    "refreshToken": {
+      "type": "integer",
+      "default": 0,
+      "description": "Increment to request a refresh"
+    },
+    "width": { "type": "integer", "default": 0 },
+    "height": { "type": "integer", "default": 0 },
+    "total": { "type": "number", "default": 0 },
+    "enabled": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enable/disable widget"
+    },
+    "color": {
+      "type": "Color",
+      "default": "#336699",
+      "description": "Primary color"
+    },
+    "items": {
+      "type": "string[]",
+      "default": [],
+      "description": "List of items"
+    },
+    "config": {
+      "type": "Object<string>",
+      "default": {},
+      "description": "Configuration object"
+    }
+  },
+  "methods": {
+    "refresh": {
+      "description": "Refresh widget data",
+      "body": "this.refreshToken = this.refreshToken + 1;"
+    },
+    "setValue": {
+      "description": "Set the widget value",
+      "parameters": [
+        {
+          "name": "newValue",
+          "type": "number",
+          "description": "The new value"
+        }
+      ],
+      "body": "this.value = newValue;"
+    },
+    "getValue": {
+      "description": "Get the current value",
+      "returnType": "number",
+      "body": "return this.value;"
+    }
+  },
+  "events": {
+    "onSelect": {
+      "description": "Fired when an item is selected"
+    },
+    "onChange": {
+      "description": "Fired when value changes"
+    },
+    "onLoad": {
+      "description": "Fired when widget loads"
+    }
+  },
+  "dataBindings": {
+    "myData": {
+      "feeds": [
+        {
+          "id": "dimensions",
+          "description": "Dimensions",
+          "type": "dimension"
+        },
+        {
+          "id": "measures",
+          "description": "Measures",
+          "type": "mainStructureMember"
+        }
+      ]
+    }
+  }
+}
+```
+
+---
+
+## Root Object
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `id` | string | **Yes** | Unique identifier using reverse domain notation (e.g., "com.company.widgetname") |
+| `version` | string | **Yes** | Semantic version (e.g., "1.0.0", "2.1.3") |
+| `name` | string | **Yes** | Display name shown in SAC widget panel |
+| `description` | string | No | Description shown in widget panel |
+| `vendor` | string | No | Developer or company name |
+| `license` | string | No | License type (MIT, Apache-2.0, proprietary) |
+| `icon` | string | No | URL to widget icon (recommended: 32x32 PNG) |
+| `newInstancePrefix` | string | No | Prefix for auto-generated script variable names |
+| `eula` | string | No | End-user license agreement text |
+| `imports` | string[] | No | Type libraries for Script API data types (e.g., `"@sap/sac-analytics-designer"`) |
+| `supportsMobile` | boolean | No | Whether the widget renders on mobile devices (default: false) |
+| `supportsExport` | boolean | No | Whether the widget supports PDF/PPTX/Google Slides export (default: false) |
+| `supportsLinkedAnalysisFilterOnSelection` | boolean | No | Optimized Story Experience only; enables linked analysis based on Filter on Data Point Selection (default: false) |
+| `supportsViewportLoading` | boolean | No | Optimized Story Experience only; enables lazy loading when the widget scrolls into the viewport (default: false) |
+| `supportsBookmark` | boolean | No | Optimized Story Experience only; enables bookmark support (default: false) |
+| `types` | object | No | Custom data structure and enumeration definitions |
+| `webcomponents` | array | **Yes** | Array of web component definitions |
+| `properties` | object | No | Widget properties accessible via script |
+| `methods` | object | No | Methods callable from script |
+| `events` | object | No | Events the widget can fire |
+| `dataBindings` | object | No | Data binding configuration |
+
+### ID Best Practices
+
+```
+com.company.widgetname     # Standard format
+com.github.username.widget # GitHub-hosted
+sap.sample.widget          # SAP samples only
+```
+
+---
+
+## Webcomponents Array
+
+Each widget can have up to three web components:
+
+### Main Component (Required)
+
+```json
+{
+  "kind": "main",
+  "tag": "my-widget",
+  "url": "https://host.com/widget.js",
+  "integrity": "sha256-abc123...",
+  "ignoreIntegrity": false
+}
+```
+
+### Styling Panel (Optional)
+
+```json
+{
+  "kind": "styling",
+  "tag": "my-widget-styling",
+  "url": "https://host.com/styling.js",
+  "integrity": "sha256-def456...",
+  "ignoreIntegrity": false
+}
+```
+
+### Builder Panel (Optional)
+
+```json
+{
+  "kind": "builder",
+  "tag": "my-widget-builder",
+  "url": "https://host.com/builder.js",
+  "integrity": "sha256-ghi789...",
+  "ignoreIntegrity": false
+}
+```
+
+### Webcomponent Properties
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `kind` | string | **Yes** | "main", "styling", or "builder" |
+| `tag` | string | **Yes** | Custom element tag name (lowercase, hyphenated, must contain hyphen) |
+| `url` | string | **Yes** | URL to JavaScript file (HTTPS required for external hosting) |
+| `integrity` | string | **Yes** | Empty string for development or SHA256 hash for production |
+| `ignoreIntegrity` | boolean | **Yes** | `true` only with empty `integrity` for development, `false` with a real digest for production |
+| `type` | string | No | Set to `"module"` to load as ES module (maps to `<script type="module">`) |
+
+### Tag Naming Rules
+
+- Must be lowercase
+- Must contain at least one hyphen (-)
+- Cannot start with a hyphen
+- Cannot use reserved names (like HTML elements)
+
+**Valid**: `my-widget`, `company-chart-v2`, `data-grid-component`
+**Invalid**: `MyWidget`, `widget`, `my_widget`
+
+---
+
+## Properties Object
+
+### Simple Types
+
+```json
+{
+  "stringProp": {
+    "type": "string",
+    "default": "default value",
+    "description": "A string property"
+  },
+  "numberProp": {
+    "type": "number",
+    "default": 3.14,
+    "description": "A floating-point number"
+  },
+  "integerProp": {
+    "type": "integer",
+    "default": 42,
+    "description": "An integer"
+  },
+  "booleanProp": {
+    "type": "boolean",
+    "default": true,
+    "description": "A boolean flag"
+  }
+}
+```
+
+### Array Types
+
+```json
+{
+  "stringArray": {
+    "type": "string[]",
+    "default": ["item1", "item2"],
+    "description": "Array of strings"
+  },
+  "numberArray": {
+    "type": "number[]",
+    "default": [1, 2, 3],
+    "description": "Array of numbers"
+  },
+  "integerArray": {
+    "type": "integer[]",
+    "default": [1, 2, 3],
+    "description": "Array of integers"
+  },
+  "booleanArray": {
+    "type": "boolean[]",
+    "default": [true, false],
+    "description": "Array of booleans"
+  }
+}
+```
+
+### Object Types
+
+```json
+{
+  "objectProp": {
+    "type": "Object<string>",
+    "default": {},
+    "description": "Object with string values"
+  },
+  "numberObject": {
+    "type": "Object<number>",
+    "default": { "a": 1, "b": 2 },
+    "description": "Object with number values"
+  }
+}
+```
+
+### Script API Types
+
+```json
+{
+  "colorProp": {
+    "type": "Color",
+    "default": "#336699",
+    "description": "Color value"
+  },
+  "selectionProp": {
+    "type": "Selection",
+    "default": {},
+    "description": "Selection object"
+  }
+}
+```
+
+**Note**: For detailed information on `Color` and `Selection` types, including their JavaScript usage patterns and structure, see [Script API Data Types](advanced-topics.md#script-api-data-types) in Advanced Topics.
+
+### Property Configuration
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `type` | string | **Yes** | Data type |
+| `default` | varies | **Yes** | Default value matching type |
+| `description` | string | No | Description for documentation |
+| `includeInBookmarks` | boolean | No | Whether this property is saved in bookmarks. Confirm the target SAC experience's default and restore order; set to `false` for script-set or reader-specific state that must not travel between users. |
+
+Review `includeInBookmarks` together with export and restore behavior. A property that is written by
+story script or carries permission-sensitive state should not be assumed safe to restore from a
+shared bookmark until the target tenant behavior is verified.
+
+---
+
+## Methods Object
+
+Methods allow scripts to call functions on the widget.
+
+### Method Without Parameters
+
+```json
+{
+  "refresh": {
+    "description": "Refresh the widget",
+      "body": "this.refreshToken = this.refreshToken + 1;"
+  }
+}
+```
+
+> **Important**: The `body` is Analytics Designer script. It can read and write properties declared in this manifest, but it cannot call private web component methods or access component internals. Model a refresh request as a declared property such as `refreshToken`.
+
+### Method With Parameters
+
+```json
+{
+  "setTitle": {
+    "description": "Set the widget title",
+    "parameters": [
+      {
+        "name": "newTitle",
+        "type": "string",
+        "description": "The new title text"
+      }
+    ],
+    "body": "this.title = newTitle;"
+  }
+}
+```
+
+### Method With Return Value
+
+```json
+{
+  "getTotal": {
+    "description": "Get the total value",
+    "returnType": "number",
+    "body": "return this.total;"
+  }
+}
+```
+
+### Method With Multiple Parameters
+
+```json
+{
+  "configure": {
+    "description": "Configure the widget",
+    "parameters": [
+      { "name": "width", "type": "integer", "description": "Width in pixels" },
+      { "name": "height", "type": "integer", "description": "Height in pixels" },
+      { "name": "title", "type": "string", "description": "Title text" }
+    ],
+    "body": "this.width = width; this.height = height; this.title = title;"
+  }
+}
+```
+
+### Method Configuration
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `description` | string | No | Method description |
+| `parameters` | array | No | Array of parameter definitions |
+| `returnType` | string | No | Return type (if method returns value) |
+| `body` | string | **Yes** | Analytics Designer script that reads or writes declared manifest properties |
+
+---
+
+## Events Object
+
+Events allow the widget to notify scripts of user interactions or state changes.
+
+### Basic Event
+
+```json
+{
+  "onSelect": {
+    "description": "Fired when an item is selected"
+  },
+  "onClick": {
+    "description": "Fired when widget is clicked"
+  },
+  "onDataChange": {
+    "description": "Fired when data changes"
+  }
+}
+```
+
+### Firing Events in Web Component
+
+```javascript
+// Simple event
+this.dispatchEvent(new Event("onSelect"));
+
+// Event with data (accessible via getEventInfo in script)
+this.dispatchEvent(new CustomEvent("onSelect", {
+  detail: {
+    selectedItem: "item1",
+    selectedIndex: 0
+  }
+}));
+```
+
+### Script Event Handler
+
+In Analytics Designer script:
+```javascript
+// Event handler
+Widget_1.onSelect = function() {
+  console.log("Item selected");
+  // Access event data if provided
+  var eventInfo = Widget_1.getEventInfo();
+};
+```
+
+---
+
+## DataBindings Object
+
+Enable widgets to receive data from SAC models.
+
+### Basic Data Binding
+
+```json
+{
+  "dataBindings": {
+    "myBinding": {
+      "feeds": [
+        {
+          "id": "dimensions",
+          "description": "Dimensions",
+          "type": "dimension"
+        },
+        {
+          "id": "measures",
+          "description": "Measures",
+          "type": "mainStructureMember"
+        }
+      ]
+    }
+  }
+}
+```
+
+### Feed Types
+
+| Type | Description | Use Case |
+|------|-------------|----------|
+| `dimension` | Dimension members | Categories, labels, hierarchies |
+| `mainStructureMember` | Measures/KPIs | Numeric values, calculations |
+
+### Feed Configuration
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `id` | string | **Yes** | Unique identifier for the feed |
+| `description` | string | **Yes** | Display name in Builder Panel |
+| `type` | string | **Yes** | "dimension" or "mainStructureMember" |
+
+### Multiple Feeds Example
+
+```json
+{
+  "dataBindings": {
+    "chartData": {
+      "feeds": [
+        { "id": "category", "description": "Category", "type": "dimension" },
+        { "id": "series", "description": "Series", "type": "dimension" },
+        { "id": "value", "description": "Value", "type": "mainStructureMember" },
+        { "id": "target", "description": "Target", "type": "mainStructureMember" }
+      ]
+    }
+  }
+}
+```
+
+### Accessing Data in JavaScript
+
+```javascript
+// Access via property
+const data = this.chartData.data;
+const metadata = this.chartData.metadata;
+
+// Iterate rows
+this.chartData.data.forEach(row => {
+  const category = row.category_0.label;
+  const value = row.value_0.raw;
+  console.log(`${category}: ${value}`);
+});
+
+// Via getDataBinding method
+const binding = this.dataBindings.getDataBinding("chartData");
+```
+
+---
+
+## Custom Types
+
+Define reusable complex types for properties.
+
+### Defining Custom Type
+
+```json
+{
+  "types": {
+    "ChartConfig": {
+      "properties": {
+        "chartType": { "type": "string", "default": "bar" },
+        "showLegend": { "type": "boolean", "default": true },
+        "colors": { "type": "string[]", "default": [] }
+      }
+    }
+  },
+  "properties": {
+    "chartConfiguration": {
+      "type": "ChartConfig",
+      "default": {
+        "chartType": "bar",
+        "showLegend": true,
+        "colors": ["#336699", "#669933"]
+      }
+    }
+  }
+}
+```
+
+---
+
+## Validation Checklist
+
+Before deploying, verify your JSON:
+
+- [ ] `id` follows reverse domain notation
+- [ ] `version` is semantic version format
+- [ ] `name` is concise and descriptive
+- [ ] All `webcomponents` have valid `tag` names (lowercase, hyphenated)
+- [ ] All URLs are HTTPS (for external hosting)
+- [ ] All `properties` have `type` and `default`
+- [ ] All `methods` have a body that only reads or writes declared properties
+- [ ] Every `webcomponents` entry declares `integrity`
+- [ ] Development uses `integrity: ""` with `ignoreIntegrity: true`, or production uses a digest with `ignoreIntegrity: false`
+- [ ] `dataBindings` feeds have unique `id` values
+
+---
+
+**Source Documentation**:
+- [SAP Custom Widget Developer Guide (PDF)](https://help.sap.com/doc/c813a28922b54e50bd2a307b099787dc/release/en-US/CustomWidgetDevGuide_en.pdf)
+- [SAP Help Portal - Custom Widgets](https://help.sap.com/docs/SAP_ANALYTICS_CLOUD/0ac8c6754ff84605a4372468d002f2bf/75311f67527c41638ceb89af9cd8af3e.html)
+
+### Changes Documented in Q2 2026 Refresh (2026-06-12)
+
+Sourced from the Custom Widget Developer Guide PDF (version 2025.21) cross-referenced against this reference file:
+
+- **8 previously undocumented root properties added**: `eula`, `imports`, `supportsMobile`, `supportsExport`, `supportsLinkedAnalysisFilterOnSelection`, `supportsViewportLoading`, `supportsBookmark`, `types`. These existed in the 2025.21 Developer Guide but were not captured in the original v1.0.0 reference.
+- **Webcomponent `type` property added**: Optional field set to `"module"` for ES module loading (`<script type="module">`).
+- **Per-property `includeInBookmarks` flag added**: Controls bookmark serialization per property (default: `true`).
+- **Array types `boolean[]` and `integer[]` added**: Previously undocumented array type variants.
+- **No custom-widget framework changes in QRC1/QRC2 2026**: The SAC Q2 2026 (2026.8) release notes contain no custom-widget-specific changes. The JSON metadata schema, lifecycle functions, data binding feeds, and widget add-on extension points are unchanged from 2025.21.
+
+**Last Updated**: 2026-06-12

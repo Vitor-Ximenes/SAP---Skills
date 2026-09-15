@@ -1,0 +1,29 @@
+{
+  "name": "sap-abap",
+  "description": "Comprehensive ABAP development skill for SAP systems. Use when writing ABAP code, working with internal tables, structures, ABAP SQL, object-oriented programming, RAP (RESTful Application Programming Model), CDS views, EML statements, ABAP Cloud development, string processing, dynamic programming, RTTI/RTTC, field symbols, data references, exception handling, or ABAP unit testing. Covers both classic ABAP and modern ABAP for Cloud Development patterns.",
+  "version": "2.4.1",
+  "author": {
+    "name": "Eduard Jiglau",
+    "email": "hello@sap-ai-skills.com",
+    "url": "https://sap-ai-skills.com"
+  },
+  "license": "GPL-3.0",
+  "homepage": "https://sap-ai-skills.com",
+  "repository": "https://github.com/secondsky/sap-skills",
+  "keywords": [
+    "abap",
+    "abap cloud",
+    "cds",
+    "internal tables",
+    "oop",
+    "rap",
+    "rest",
+    "sap",
+    "sap-abap",
+    "sql"
+  ],
+  "category": "abap",
+  "commands": [
+    "./commands/abap-cloud-review.md"
+  ]
+}

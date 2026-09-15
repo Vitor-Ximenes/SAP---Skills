@@ -1,0 +1,9 @@
+{
+  "ui5-tooling": {
+    "command": "npx",
+    "args": ["-y", "@ui5/mcp-server@0.2.17"],
+    "env": {
+      "UI5_MCP_SERVER_RESPONSE_NO_RESOURCES": "true"
+    }
+  }
+}

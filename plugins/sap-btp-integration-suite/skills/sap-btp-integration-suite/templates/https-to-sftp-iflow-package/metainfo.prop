@@ -1,0 +1,5 @@
+artifact.name=HTTPS_to_SFTP_Template
+artifact.id=HTTPS_to_SFTP_Template
+artifact.version=1.0.0
+artifact.type=IntegrationFlow
+artifact.description=Minimal HTTPS sender to SFTP receiver template with externalized runtime values.

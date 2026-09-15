@@ -1,0 +1,36 @@
+{
+  "name": "sap-hana-cli",
+  "description": "Assists with SAP HANA Developer CLI (hana-cli) for database development and administration. Use when: installing hana-cli, connecting to SAP HANA databases, inspecting database objects (tables, views, procedures, functions), managing HDI containers, executing SQL queries, converting metadata to CDS/EDMX/OpenAPI formats, managing SAP HANA Cloud instances, working with BTP CLI integration, or troubleshooting hana-cli commands. Covers: 91 commands, 17+ output formats, HDI container management, cloud operations.",
+  "version": "2.4.1",
+  "author": {
+    "name": "Eduard Jiglau",
+    "email": "hello@sap-ai-skills.com",
+    "url": "https://sap-ai-skills.com"
+  },
+  "license": "GPL-3.0",
+  "homepage": "https://sap-ai-skills.com",
+  "repository": "https://github.com/secondsky/sap-skills",
+  "keywords": [
+    "api",
+    "btp",
+    "cds",
+    "cli",
+    "cloud",
+    "database",
+    "hana",
+    "hdi",
+    "sap",
+    "sap-hana-cli",
+    "sql",
+    "sqlscript"
+  ],
+  "category": "hana",
+  "agents": [
+    "./agents/hana-database-advisor.md"
+  ],
+  "commands": [
+    "./commands/hana-connect-check.md",
+    "./commands/hana-inspect-object.md"
+  ],
+  "mcpServers": "./.mcp.json"
+}

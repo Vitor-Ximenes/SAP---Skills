@@ -1,0 +1,12 @@
+# ABAP / gCTS / Transport Dependency Review
+
+Use this checklist when dependency work affects ABAP Cloud, RAP, CDS, software components, abapGit packages, or gCTS imports.
+
+- [ ] Identify dependent software components and required import order
+- [ ] Check transport request object list for unrelated generated artifacts
+- [ ] Run ATC/security checks before release/import
+- [ ] Verify CDS/RAP behavior dependencies in the target system
+- [ ] Confirm communication arrangement or destination changes are intentional
+- [ ] For gCTS, compare repository commit, branch, and package mapping
+- [ ] Record rollback transport, previous tag, or re-import path
+- [ ] Coordinate import window for cross-system dependencies

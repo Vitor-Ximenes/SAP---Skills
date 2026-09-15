@@ -1,0 +1,20 @@
+# BTP / Cloud Foundry / MBT Dependency Review
+
+Use this checklist before changing BTP deployment tooling, `mta.yaml`, `xs-security.json`, or pipeline CLI versions.
+
+- [ ] Pin `mbt`, `cf`, `btp`, and plugin versions in CI images or setup steps
+- [ ] Run `mbt build` from a clean checkout
+- [ ] Inspect the generated MTAR contents before deploy
+- [ ] Confirm `cf api`, org, and space target before deployment
+- [ ] Review service instance, binding, destination, and role collection changes
+- [ ] Confirm XSUAA scopes/authorities did not broaden unexpectedly
+- [ ] Keep service keys and deployment credentials out of the repo
+- [ ] Document rollback command or previous MTAR artifact
+
+Suggested commands:
+
+```bash
+cf target
+mbt build
+find mta_archives -maxdepth 1 -type f -name '*.mtar' -print
+```

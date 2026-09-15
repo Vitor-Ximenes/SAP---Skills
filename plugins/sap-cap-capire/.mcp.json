@@ -1,0 +1,7 @@
+{
+  "sap-cap-capire": {
+    "command": "npx",
+    "args": ["-y", "@cap-js/mcp-server@0.0.5"],
+    "env": {}
+  }
+}

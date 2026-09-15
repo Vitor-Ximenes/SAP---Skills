@@ -1,0 +1,32 @@
+{
+  "name": "sap-hana-cloud-data-intelligence",
+  "description": "Develops data processing pipelines, integrations, and machine learning scenarios in SAP Data Intelligence Cloud. Use when building graphs/pipelines with operators, integrating ABAP/S4HANA systems, creating replication flows, developing ML scenarios with JupyterLab, or using Data Transformation Language functions. Covers Gen1/Gen2 operators, subengines (Python, Node.js, C++), structured data operators, and repository objects.",
+  "version": "2.4.1",
+  "author": {
+    "name": "Eduard Jiglau",
+    "email": "hello@sap-ai-skills.com",
+    "url": "https://sap-ai-skills.com"
+  },
+  "license": "GPL-3.0",
+  "homepage": "https://sap-ai-skills.com",
+  "repository": "https://github.com/secondsky/sap-skills",
+  "keywords": [
+    "abap",
+    "cloud",
+    "data",
+    "database",
+    "hana",
+    "hdi",
+    "intelligence",
+    "node.js",
+    "python",
+    "sap",
+    "sap-hana-cloud-data-intelligence",
+    "sql",
+    "sqlscript"
+  ],
+  "category": "hana",
+  "commands": [
+    "./commands/data-intelligence-pipeline-check.md"
+  ]
+}

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+  <name>HTTPS_to_SFTP_Template</name>
+  <comment>Minimal SAP Cloud Integration HTTPS-to-SFTP iFlow template with externalized runtime settings.</comment>
+  <projects/>
+  <buildSpec>
+    <buildCommand>
+      <name>org.eclipse.jdt.core.javabuilder</name>
+      <arguments/>
+    </buildCommand>
+  </buildSpec>
+  <natures>
+    <nature>org.eclipse.jdt.core.javanature</nature>
+    <nature>com.sap.ide.ifl.project.support.project.nature</nature>
+    <nature>com.sap.ide.ifl.bsn</nature>
+  </natures>
+</projectDescription>

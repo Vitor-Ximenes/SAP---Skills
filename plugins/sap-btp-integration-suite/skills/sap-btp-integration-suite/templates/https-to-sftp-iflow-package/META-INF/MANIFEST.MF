@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+SAP-RuntimeProfile: iflmap
+Bundle-SymbolicName: HTTPS_to_SFTP_Template;singleton:=true
+Bundle-Name: HTTPS_to_SFTP_Template
+Bundle-Version: 1.0.0
+Bundle-ManifestVersion: 2
+SAP-ArtifactTrait: 
+SAP-NodeType: IFLMAP
+SAP-BundleType: IntegrationFlow
+Import-Package: org.apache.camel;version="2.8",org.apache.camel.builder;version="2.8",org.osgi.framework;version="1.6.0",org.slf4j;version="1.6"
+Import-Service: com.sap.esb.security.KeyManagerFactory;multiple:=false,com.sap.esb.security.TrustManagerFactory;multiple:=false
+

@@ -1,0 +1,29 @@
+# Gradle SAP Security Fragment
+
+# settings.gradle
+dependencyVerification {
+    verificationMode = VerificationMode.STRICT
+}
+
+# Generate/update verification metadata after manual review:
+# ./gradlew --write-verification-metadata sha256 help
+
+# Enable dependency locking:
+# gradle.properties
+dependencyLocking=true
+
+# build.gradle
+dependencyLocking {
+    lockAllConfigurations()
+}
+
+# Recommended CI checks:
+# ./gradlew dependencies --write-locks
+# ./gradlew dependencyInsight --dependency <name>
+# osv-scanner --lockfile=gradle.lockfile
+
+Review checklist:
+- [ ] No dynamic versions (`+`, `latest.release`, or open ranges)
+- [ ] Wrapper version is committed and reviewed
+- [ ] Verification metadata is committed
+- [ ] Lockfile diff contains only intended modules
