@@ -1,11 +1,10 @@
 {
-  "name": "sap-skills",
+  "name": "vitor-sap-skills",
   "version": "2.4.1",
   "description": "SAP development skills with evidence-tracked public-source and package-registry verification",
-  "repository": "https://github.com/secondsky/sap-skills",
+  "repository": "https://github.com/Vitor-Ximenes/SAP---Skills",
   "owner": {
-    "name": "Eduard Jiglau",
-    "email": "hello@sap-ai-skills.com"
+    "name": "Vitor Ximenes"
   },
   "metadata": {
     "version": "2.4.1",
