@@ -36,7 +36,7 @@
     "cds",
     "fiori"
   ]
-}
+},
     {
       "name": "sap-abap",
       "source": "./plugins/sap-abap",
