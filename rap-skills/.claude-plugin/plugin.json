@@ -1,0 +1,10 @@
+{
+  "name": "sap-rap-skills",
+  "version": "1.0.0",
+  "description": "SAP RAP development skills for managed and unmanaged development on BTP ABAP Environment and compatible SAP environments.",
+  "author": {
+    "name": "Vitor Ximenes"
+  },
+  "repository": "https://github.com/Vitor-Ximenes/SAP---Skills",
+  "license": "MIT"
+}

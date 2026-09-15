@@ -21,7 +21,22 @@
       "ui-development"
     ]
   },
-  "plugins": [
+  "plugins": [ {
+  "name": "sap-rap-skills",
+  "source": "./rap-skills",
+  "description": "SAP RAP development skills for managed and unmanaged RAP development.",
+  "version": "1.0.0",
+  "category": "rap",
+  "keywords": [
+    "sap",
+    "rap",
+    "abap",
+    "abap-cloud",
+    "btp",
+    "cds",
+    "fiori"
+  ]
+}
     {
       "name": "sap-abap",
       "source": "./plugins/sap-abap",
