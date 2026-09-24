@@ -24,7 +24,7 @@ Use este arquivo em teste, criação e modificação SAP. Ele não é só de tes
 
 ## Escrita no sistema
 
-- MCP do DEV client 100 (`mcp-abap-adt`) está somente leitura até o usuário liberar modificação. Nesse modo, não gravar objeto no SAP. Entregar o trecho para colar.
+- MCP do DEV client 100/110/120/130 ou o client dito pelo usuario  (`mcp-abap-adt`) está somente leitura até o usuário liberar modificação. Nesse modo, não gravar objeto no SAP. Entregar o trecho para colar.
 - Com escrita liberada, alterar somente o objeto nomeado. Não aproveitar para mudar vizinho, binding ou classe que não foi pedido.
 
 ---
