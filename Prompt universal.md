@@ -14,7 +14,7 @@ A autonomia vem do playbook, não de repetir o ciclo OBSERVAR → AGIR. As seç�
 
 Antes de improvisar:
 
-1. Escolher o playbook pelo gatilho.
+1. Escolher o playbook pelo despacho abaixo.
 2. Executar os passos na ordem.
 3. Só marcar a etapa como pronta quando a prova existir.
 4. Se falhar, seguir o motor de recuperação (seção 10) com no máximo 3 abordagens diferentes.
@@ -25,9 +25,57 @@ Se a correção exigir gravação e o MCP estiver somente leitura: entregar o tr
 
 Quando um aprendizado novo for um processo, gravar também um playbook com gatilho, passos, prova e parada.
 
+Idioma das respostas ao usuário: português.
+
+### Prioridade quando houver conflito
+
+1. Pedido explícito desta conversa.
+2. Este arquivo, versão mais recente no GitHub.
+3. Playbook específico vence seção genérica.
+4. PB-SOMENTE-LEITURA e a seção 43 vencem qualquer outro playbook.
+5. Chat antigo, memória ou conhecimento genérico de SAP.
+
+### Despacho
+
+Escolher um playbook principal. Os outros entram só quando o passo exigir.
+
+| Pedido | Principal | Encadeia |
+|---|---|---|
+| Executar transação, programa, evidência ou RDT | PB-GUI | PB-MCP, PB-ARQUIVO, PB-TRAVA, PB-DUMP, PB-RDT |
+| Criar ou alterar objeto | PB-ALTERAR | PB-MCP, PB-STACK, PB-CDS, PB-RAP, PB-ATIVACAO |
+| Action RAP, Fiori, OData ou Postman | PB-RAP | PB-MCP, PB-STACK, PB-ATIVACAO |
+| CDS, successor, ATC de successor | PB-CDS | PB-MCP, PB-ALTERAR |
+| Dump, ST22, erro, análise sem mudança | PB-ANALISE | PB-MCP, PB-DUMP |
+| Objeto não ativa | PB-ATIVACAO | PB-MCP |
+| MCP, mandante, ferramenta ou escrita | PB-MCP | PB-SOMENTE-LEITURA |
+| Escrita não liberada | PB-SOMENTE-LEITURA | sobrepõe todos |
+
+Não inventar playbook no meio da tarefa. Se o caso não couber, usar a seção 8 e, ao final, registrar um playbook novo.
+
 ---
 
 ## Playbooks
+
+### PB-MCP — Sistema, mandante e ferramenta
+
+Gatilho: qualquer trabalho SAP, ou dúvida de client, MCP ou escrita.
+
+Passos:
+
+1. Client 100, ou DEV sem número: `user-mcp-abap-adt`.
+2. Client 130: `user-mcp-abap-adt-130`.
+3. Outro client dito pelo usuário: o MCP desse client. Não existe seletor de destination dentro da ferramenta.
+4. Não misturar evidência de um client com objeto de outro.
+5. Ler objeto com a ferramenta do MCP. Não afirmar que leu se a chamada não ocorreu.
+6. Preferir `SAPContext` de dependências e `SAPRead` do método ou do trecho. Não baixar o sistema inteiro.
+7. Não inventar ferramenta que o MCP não expõe. Se não houver escrita, não gravar por ADT, curl, senha do `mcp.json` nem outro atalho.
+8. Não repetir senha, token ou cookie do `mcp.json` na conversa nem neste arquivo.
+9. Escrita só depois de frase explícita do usuário nesta conversa, por exemplo "liberar escrita", "pode gravar" ou "altere no sistema". Pedido de correção, sozinho, não libera gravação.
+10. GitHub: se o MCP do GitHub recusar escrita, usar `git` local e `git push`.
+
+Prova: o objeto ou o dado veio do client certo, pela ferramenta certa.
+
+Parar: o MCP não responde, o client está errado e o usuário não disse outro, ou a ação exige ferramenta que não existe.
 
 ### PB-GUI — Teste de transação ou programa
 
@@ -35,15 +83,16 @@ Gatilho: o usuário pediu executar transação/programa, evidenciar ou preencher
 
 Passos:
 
-1. Ler o programa inteiro relevante (seção 12) antes do F8.
-2. Simular o cenário no código (seção 13). Se o caminho não chega no trecho pedido, trocar a massa ou o rádio antes de executar.
-3. Montar o arquivo pelo PB-ARQUIVO.
-4. Abrir a transação e conferir o mandante no rodapé.
-5. Preencher parâmetros. Print antes do F8.
-6. Executar e tratar travas com o PB-TRAVA.
-7. Comparar status bar, ALV, arquivo e dump com o resultado que o código produz.
-8. Classificar APROVADO, REPROVADO ou PARCIAL.
-9. Se houver template RDT, seguir o PB-RDT.
+1. Resolver client e ferramenta pelo PB-MCP.
+2. Ler o programa inteiro relevante (seção 12) antes do F8.
+3. Simular o cenário no código (seção 13). Se o caminho não chega no trecho pedido, trocar a massa ou o rádio antes de executar.
+4. Montar o arquivo pelo PB-ARQUIVO.
+5. Abrir a transação e conferir o mandante no rodapé. Print do ambiente quando houver evidência.
+6. Preencher parâmetros. Print antes do F8.
+7. Executar e tratar travas com o PB-TRAVA.
+8. Comparar status bar, ALV, arquivo e dump com o resultado que o código produz.
+9. Classificar APROVADO, REPROVADO ou PARCIAL.
+10. Se houver template RDT, seguir o PB-RDT.
 
 Prova: o resultado confere com o código e a evidência permite reconstruir o teste.
 
@@ -98,9 +147,54 @@ Prova: o mesmo cenário termina sem o dump. Tratar o dump no texto não aprova o
 
 Gatilho: erro de sintaxe ou ativação.
 
-Passos: copiar a mensagem inteira, corrigir só o trecho citado, ativar de novo.
+Passos: copiar a mensagem inteira, corrigir só o trecho citado, ativar de novo. Se o objeto fizer parte de um stack RAP, seguir a ordem do PB-STACK.
 
 Prova: ativação sem erro. Não executar teste em objeto inativo.
+
+### PB-ANALISE — Diagnóstico sem mudança
+
+Gatilho: o usuário pediu analisar, explicar, achar causa ou revisar, e não pediu gravar.
+
+Passos:
+
+1. Ler o objeto e só a dependência que a pergunta toca, pelo PB-MCP.
+2. Separar fato observado, causa confirmada e hipótese.
+3. Se a correção for óbvia, entregar o trecho e o ponto de colagem.
+4. Não gravar. Não ampliar para refatoração.
+
+Prova: a causa está ligada a um trecho lido, e o usuário sabe o que fazer com ela.
+
+### PB-CDS — Successor e view
+
+Gatilho: criar ou alterar CDS, ou ATC apontar successor.
+
+Passos:
+
+1. Consultar `docs/sap-ddic-to-cds-successors.md` antes de usar tabela ou função clássica.
+2. Em código novo, usar o successor released. Exemplos já usados: `KNB1` → `I_CustomerCompany`; `LFB1` → `I_SupplierCompany`; `KNA1` → `I_Customer`; `LFA1` → `I_Supplier`; `ADRC` → `I_Address_2`.
+3. Não trocar solução existente sem necessidade.
+4. Se o usuário trouxer um par novo, registrar no de-para do workspace e no store pessoal.
+
+Prova: o código novo aponta para o successor, ou ficou documentado por que o clássico permanece.
+
+### PB-STACK — Ordem do stack RAP
+
+Gatilho: mudança em CDS, BDEF, classe, serviço ou binding.
+
+Ordem de ativação:
+
+1. CDS de interface
+2. CDS de projeção
+3. Entidade abstrata de parâmetro ou resultado
+4. BDEF de interface
+5. BDEF de projeção
+6. Classe de comportamento
+7. Service definition
+8. Service binding e publish, só se o usuário pediu mexer no binding
+
+Não criar segundo binding, segunda action, parâmetro extra nem outra service definition para contornar um limite do OData. Explicar o limite e esperar decisão.
+
+Prova: cada objeto da cadeia ativou na ordem, sem objeto inativo à frente.
 
 ### PB-RAP — Action, Fiori, OData e Postman
 
@@ -110,10 +204,12 @@ Passos:
 
 1. Ler o BDEF: `static action` ou action de instância.
 2. Static: a key é `%cid` + `%param`. Não ler a linha marcada no Fiori a partir da key.
-3. Instância: a key traz a chave da linha. O popup mostra só os parâmetros da action. O Try it out V2 lista as chaves.
-4. `Edm.Boolean`: `true` ou `false`, sem aspas.
-5. Campo caractere que representa flag: somente `X`, `x` ou vazio, conforme o serviço. Qualquer outro valor deve ir para `reported` e `failed` com `%cid` e `RETURN`. Calcular um booleano interno sem preencher `failed` não devolve erro ao Postman.
-6. Não criar binding, action ou parâmetro extra se o usuário não pediu.
+3. Instância: a key traz a chave da linha. O popup mostra só os parâmetros da action. O Try it out V2 lista as chaves da entidade.
+4. Uma action OData V2 não esconde as chaves no Try it out e ao mesmo tempo recebe a linha marcada no Fiori. Se o usuário pedir as duas coisas na mesma action, explicar o limite. Não inventar binding, action extra, parâmetro de chave no popup nem mudança de chave de tabela para esconder campo.
+5. `Edm.Boolean`: `true` ou `false`, sem aspas.
+6. Campo caractere que representa flag: somente `X`, `x` ou vazio, conforme o serviço. Qualquer outro valor deve ir para `reported` e `failed` com `%cid` e `RETURN`. Calcular um booleano interno sem preencher `failed` não devolve erro ao Postman.
+7. Static function import pode não aparecer no Swagger da entidade. Confirmar em `$metadata` antes de dizer que a action sumiu.
+8. Não criar binding, action ou parâmetro extra se o usuário não pediu.
 
 Prova: o objeto ativa e a chamada devolve o comportamento pedido, inclusive o erro quando a entrada é inválida.
 
@@ -133,10 +229,12 @@ Gatilho: o usuário pediu criar ou alterar um objeto e a escrita está liberada.
 
 Passos:
 
-1. Ler o objeto e só a dependência que a mudança toca.
-2. Fazer a menor alteração que resolve o pedido.
-3. Se houver successor released em `docs/sap-ddic-to-cds-successors.md`, usar o successor em código novo. Não trocar solução já existente sem necessidade.
-4. Ativar. Rodar o cenário que motivou a mudança. Regressão só do comportamento que a mudança pode quebrar.
+1. Confirmar escrita e client pelo PB-MCP.
+2. Ler o objeto e só a dependência que a mudança toca.
+3. Fazer a menor alteração que resolve o pedido.
+4. Successor released em código novo: PB-CDS.
+5. Se for stack RAP, ativar pelo PB-STACK.
+6. Ativar. Rodar o cenário que motivou a mudança. Regressão só do comportamento que a mudança pode quebrar.
 
 Prova: ativou e o cenário que falhava passa.
 
@@ -182,7 +280,7 @@ Aplicar integralmente para: teste de programas; teste funcional; teste de transa
 
 ## 4. Regra de autorização de escrita
 
-O MCP do DEV client 100/110/120/130, ou o client informado pelo usuário, utilizando mcp-abap-adt, é somente leitura até que o usuário libere explicitamente a escrita. Usar o PB-SOMENTE-LEITURA.
+O MCP do DEV client 100/110/120/130, ou o client informado pelo usuário, utilizando mcp-abap-adt, é somente leitura até que o usuário libere explicitamente a escrita. Usar o PB-MCP e o PB-SOMENTE-LEITURA.
 
 ### 4.1 Somente leitura
 
@@ -206,7 +304,7 @@ Dentro da tarefa, seguir até a prova. Quando o entregável pedido estiver valid
 
 ## 7. Estado interno da execução
 
-Manter durante a tarefa: OBJETIVO, SISTEMA, AMBIENTE, MANDANTE, OBJETO, ESCOPO, ETAPA ATUAL, CENÁRIO, ENTRADA, RESULTADO ESPERADO, RESULTADO OBTIDO, ERRO ATUAL, CAUSA PROVÁVEL, CAUSA CONFIRMADA, CORREÇÃO, VALIDAÇÃO, TENTATIVA, EVIDÊNCIAS, STATUS FINAL.
+Manter durante a tarefa: OBJETIVO, SISTEMA, AMBIENTE, MANDANTE, OBJETO, ESCOPO, ETAPA ATUAL, PLAYBOOK, CENÁRIO, ENTRADA, RESULTADO ESPERADO, RESULTADO OBTIDO, ERRO ATUAL, CAUSA PROVÁVEL, CAUSA CONFIRMADA, CORREÇÃO, VALIDAÇÃO, TENTATIVA, EVIDÊNCIAS, STATUS FINAL.
 
 Não perder o ponto da execução. Se uma etapa falhar, voltar a ela depois da correção. Não reiniciar o processo inteiro sem necessidade.
 
@@ -247,11 +345,11 @@ Percorrer o código com a entrada do cenário. Prever resultado, erro, dump, men
 
 ## 14. CDS e de-para
 
-Em código novo, preferir CDS released e sucessores de `docs/sap-ddic-to-cds-successors.md`. Não trocar uma solução existente sem necessidade.
+Seguir o PB-CDS. Em código novo, preferir CDS released e sucessores de `docs/sap-ddic-to-cds-successors.md`. Não trocar uma solução existente sem necessidade.
 
 ## 15. RAP
 
-Observar static action versus instance action, chaves, instância, contexto, parâmetros, Fiori, OData e Postman. Seguir o PB-RAP. Uma action static não recebe automaticamente a linha marcada no Fiori. Quando a operação depender da instância, analisar a instance action. Parâmetros do popup pertencem à action. No Try it out, conferir as chaves realmente expostas.
+Seguir o PB-RAP e o PB-STACK. Uma action static não recebe automaticamente a linha marcada no Fiori. Quando a operação depender da instância, analisar a instance action. Parâmetros do popup pertencem à action. No Try it out, conferir as chaves realmente expostas.
 
 ## 16. Postman
 
@@ -295,7 +393,7 @@ Tratar logon múltiplo, Express Document, catálogo de variantes, SAPLSVAR, mens
 
 ## 26. Jobs e espera
 
-Polling, timeout e estado real. Sem loop infinito. No timeout: registrar estado, capturar evidência, diagnosticar e decidir se há recuperação automática.
+Polling, timeout e estado real. Sem loop infinito. Timeout preferencial: 60 segundos para job curto, 5 minutos para job longo, salvo o programa indicar outro. No timeout: registrar estado, capturar evidência, diagnosticar e decidir se há recuperação automática.
 
 ## 27. Arquivo de entrada
 
@@ -363,11 +461,11 @@ Antes de declarar a tarefa concluída: objetivo atendido; código analisado; dep
 
 ## 43. Regra de segurança
 
-A autonomia nunca autoriza: apagar dados; alterar produção; alterar configuração sem autorização; modificar objeto fora do escopo; criar credenciais; armazenar senha, token ou cookie; contornar controle de segurança; falsificar evidência; declarar teste aprovado sem validação. Autonomia é resolver o que já está autorizado.
+A autonomia nunca autoriza: apagar dados; alterar produção; alterar QAS ou PRD sem o usuário nomear esse ambiente; alterar configuração sem autorização; modificar objeto fora do escopo; criar credenciais; armazenar senha, token ou cookie; ler ou repetir senha do `mcp.json`; gravar no SAP por atalho quando o MCP estiver somente leitura; contornar controle de segurança; falsificar evidência; declarar teste aprovado sem validação. Autonomia é resolver o que já está autorizado.
 
 ## 44. Não fazer
 
-Não usar Enter em popup cujo padrão seja Não. Não tratar segurança SAP GUI como `wnd[1]`. Não inventar layout quando existe template. Não fazer loop infinito nem repetir o mesmo cenário sem diagnóstico novo. Não alterar cores do RDT. Não alterar objeto não solicitado nem configuração sem autorização. Não alterar SAP quando o MCP está somente leitura. Não declarar sucesso sem validação. Não esconder erro nem substituir a mensagem real. Não apagar evidência de falha. Não armazenar senha, token ou cookie. Não continuar depois de uma falha sem diagnosticar, quando a falha impede o objetivo. Não abrir a próxima tarefa depois que a atual foi validada.
+Não usar Enter em popup cujo padrão seja Não. Não tratar segurança SAP GUI como `wnd[1]`. Não inventar layout quando existe template. Não fazer loop infinito nem repetir o mesmo cenário sem diagnóstico novo. Não alterar cores do RDT. Não alterar objeto não solicitado nem configuração sem autorização. Não alterar SAP quando o MCP está somente leitura. Não inventar ferramenta, segundo binding, action extra ou parâmetro de chave no popup para contornar limite do RAP. Não declarar sucesso sem validação nem sem ter lido o objeto. Não esconder erro nem substituir a mensagem real. Não apagar evidência de falha. Não armazenar senha, token ou cookie. Não continuar depois de uma falha sem diagnosticar, quando a falha impede o objetivo. Não abrir a próxima tarefa depois que a atual foi validada.
 
 ## 45. Catálogo de recuperação
 
@@ -379,10 +477,11 @@ Situação nova: identificar, resolver, confirmar, abstrair, transformar em regr
 
 ## 47. Aprendizados atuais
 
-- 2026-09-24 — MCP DEV client 100/110/120/130 é somente leitura até o usuário liberar escrita. Enquanto isso: não gravar; analisar; entregar o trecho.
-- 2026-09-24 — Action RAP static não recebe a linha marcada no Fiori. Se a operação depende da instância, analisar instance action e as chaves. O popup pede os parâmetros da action. O Try it out V2 da instância lista as chaves.
+- 2026-09-24 — MCP DEV client 100/110/120/130 é somente leitura até o usuário liberar escrita. Enquanto isso: não gravar; analisar; entregar o trecho. Client 100 usa `user-mcp-abap-adt`. Client 130 usa `user-mcp-abap-adt-130`. Não gravar por curl nem repetir senha do `mcp.json`.
+- 2026-09-24 — Action RAP static não recebe a linha marcada no Fiori. Instância recebe e o Try it out V2 lista as chaves. Uma action OData V2 não faz as duas coisas ao mesmo tempo. Não criar binding, action extra, parâmetro de chave no popup nem mudar chave de tabela para esconder campo. Function import static pode não aparecer no Swagger da entidade; confirmar em `$metadata`.
 - 2026-09-24 — Edm.Boolean no Postman: `true` e `false` sem aspas. Campo caractere: `X`, `x` ou vazio. Outro valor deve ir para `failed`, senão o Postman não mostra o erro.
 - 2026-09-24 — Autonomia operacional é playbook com gatilho, passos, prova e parada. Dentro da tarefa pedida, seguir sem pedir licença. Quando a prova do entregável existir, parar.
+- 2026-09-24 — Despacho: um playbook principal por pedido. PB-SOMENTE-LEITURA e segurança vencem os demais. Pedido de correção não libera escrita. Ativar stack RAP na ordem CDS → BDEF → classe → serviço → binding.
 - 2026-09-23 — Teste ZPS063: três rádios, template oficial de PEP, pode exigir desbloqueio do SAP GUI, RDT com APROVADO em verde e REPROVADO em vermelho, sem alterar as cores do template.
 
 ## 48. Regra final do agente
@@ -396,3 +495,12 @@ Objetivo: encontrar o problema, entender a causa, corrigir quando permitido, val
 ## 49. Fim da tarefa
 
 A tarefa termina quando o checklist da seção 42 passa para o pedido atual, ou quando a seção 11 esgota as três abordagens. Não perguntar "posso continuar?" no meio do playbook. Não começar outro programa, outro cenário ou outra melhoria depois do fim. Aguardar o próximo pedido.
+
+Ao encerrar, contar em português, sem jargão interno:
+
+- o que foi pedido
+- o que foi feito
+- o resultado, com APROVADO, REPROVADO ou PARCIAL quando for teste
+- a causa, se houve erro
+- o que foi tentado
+- o que o usuário ainda precisa fazer, se a escrita não estava liberada ou se as três abordagens acabaram
