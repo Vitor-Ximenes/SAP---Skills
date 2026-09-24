@@ -34,10 +34,8 @@ Use este arquivo em teste, criação e modificação SAP. Ele não é só de tes
 1. Ler o objeto e o que ele chama antes de propor mudança.
 2. Preferir CDS released do de-para do projeto (`docs/sap-ddic-to-cds-successors.md`) em vez de tabela ou função clássica, quando houver successor.
 3. Não ampliar o escopo. Corrigir o que foi pedido.
-4. Action RAP `static` não recebe a linha marcada no Fiori. A key traz `%cid` e `%param`. A linha (`Lifnr` / `Parvw` / `Bukrs`) só chega em action de instância.
-5. No app Fiori, o popup da action de instância mostra os parâmetros. No Try it out OData V2, a mesma action lista também as chaves. O Swagger do binding UI não lista o POST da action `static`.
-6. Parâmetro `abap_boolean` no Postman é `true` ou `false`, sem aspas. Texto leva aspas (`e_bukrs='LC01'`).
-7. Se `e_keep` for caractere, o valor aceito é `X`, `x` ou vazio. Outro valor deve ir para `failed` da action, senão o Postman não mostra erro.
+4. Action RAP `static` não recebe a linha marcada no Fiori.
+6. Parâmetro `abap_boolean` no Postman é `true` ou `false`, sem aspas.
 
 ---
 
@@ -47,6 +45,7 @@ Use este arquivo em teste, criação e modificação SAP. Ele não é só de tes
 2. Executar a transação no mandante informado sem ficar travado em diálogos.
 3. Tratar toda trava interativa conhecida.
 4. Capturar prints (antes do F8, popups relevantes, resultado) e, ao final, preencher o RDT no template Word sem alterar cores ou estilos.
+5. Entender todo tipo de erro que aparecer, erros, dumps, warns, entender e retornar ao usuario com a explicação do problema
 
 ### Entradas
 
@@ -72,11 +71,13 @@ Use este arquivo em teste, criação e modificação SAP. Ele não é só de tes
 
 Se existir Download Template, usar o arquivo gerado pelo programa.
 
+antes de executar os testes, abrir o programa principal, LER TODO o codigo, entender o CODIGO, rodar possiveis cenarios ficticios sem executar o programa e pensar se ira acontecer erro com o cenario solicitado ou não, antes de iniciar todo o processo.
+
 ---
 
 ## Fase 1 — Travas do SAP GUI
 
-### A) Popup de confirmação (`SAPLSPO1`)
+### A) Popup de confirmação 
 
 - `wnd[1]/usr/btnBUTTON_1` = Sim. `btnBUTTON_2` = Não.
 - Não usar Enter se o botão padrão for Não.
@@ -137,8 +138,6 @@ Se existir Download Template, usar o arquivo gerado pelo programa.
 | Decimal | Ponto | `100.50` | `100,50` |
 | BR completo | Ponto de milhar e vírgula decimal | `1.234.567,89` | vírgula curta |
 
-Vírgula decimal curta (`100,00`) e `.00` em inteiro quebram carga XCO (`CX_SY_REF_IS_INITIAL`).
-
 ---
 
 ## Fase 3 — Execução
@@ -152,6 +151,10 @@ Para cada rádio, checkbox ou variante:
 5. F8 e tratar Sim, Permitir e demais travas.
 6. Print do resultado.
 7. Registrar APROVADO, REPROVADO ou PARCIAL com o texto da status bar.
+
+Aprovado - Cor verde
+Reprovado - Vermelho
+Parcial - Amarelo
 
 ---
 
