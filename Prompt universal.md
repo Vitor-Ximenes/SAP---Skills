@@ -45,6 +45,18 @@ Palavra-chave do pedido → playbook:
 | `preview` `feap` `entity set` `association` `abrir app` `abrir o fiori` `preview fiori` | PB-FIORI-PREVIEW |
 | `executar` `rode` `f8` `transação` `se38` `rdt` `evidência` `print do teste` | PB-GUI |
 | `dump` `st22` `short dump` `exceção que quebrou o teste` | PB-DUMP |
+| `sql lento` `odata lento` `st05` `cds_sql` `odata_perf` `timeout odata` | PB-SQL |
+| `segw` `dpc_ext` `mpc_ext` `migrar odata` `gateway v2` | PB-SEGW |
+| `gerar serviço rap` `criar stack rap` `scaffold rap` `business object rap` | PB-RAP-GERAR |
+| `determinação` `validação rap` `behavior pool` `lhc_` `implementar bdef` | PB-RAP-LOGIC |
+| `abap unit` `teste unitário` `test double` `cds test` `cdstdf` | PB-UNIT |
+| `cube` `analytical query` `star schema` `analytics.dataCategory` | PB-ANALYTICS |
+| `fiori elements` `lrop` `lineitem` `@ui.` `list report` | PB-FE |
+| `modernizar ui5` `ui5 typescript` `flexiblecolumnlayout` `freestyle ui5` | PB-UI5 |
+| `review transporte` `o que mudou` `pending draft` `transportes abertos` `se09` `ordem de transporte` | PB-TR |
+| `código morto` `unused` `scmon` `susg` `aposentar z` | PB-UNUSED |
+| `documentar pacote` `documentar objetos` `onboarding docs` | PB-DOC |
+| `dossiê` `migração ecc` `s/4 readiness` | PB-DOSSIER |
 | `crie` `criar` `adicione` `adicionar` `altere` `alterar` `grave` `modifique` `inclua o campo` | PB-ALTERAR |
 | `action` `postman` `odata` `try it out` `function import` `popup da action` | PB-RAP |
 | `cds` `view entity` `successor` `sucessor` `ddic` | PB-CDS |
@@ -56,7 +68,9 @@ Palavra-chave do pedido → playbook:
 | `excel` `csv` `arquivo de entrada` `template` | PB-ARQUIVO |
 | `popup` `trava` `logon` `fazer login` `#32770` | PB-TRAVA |
 
-`Fiori` sozinho não decide: se for preview/abrir app → PB-FIORI-PREVIEW; se for action/popup/OData → PB-RAP.
+`Fiori` sozinho não decide: se for preview/abrir app → PB-FIORI-PREVIEW; se for action/popup/OData → PB-RAP; se for LROP/anotação `@UI` → PB-FE; se for UI5 freestyle/TypeScript → PB-UI5.
+
+Skills ARC-1 completas: `plugins/arc-1-skills/` (origem [arc-mcp/arc-1/skills](https://github.com/arc-mcp/arc-1/tree/main/skills)). O playbook abaixo vence o texto longo da skill se divergirem.
 
 Se a correção exigir gravação e não houver escrita: entregar o trecho e o ponto de colagem. Não fingir que ativou.
 
@@ -86,13 +100,25 @@ Se dois principais servirem, usar esta ordem e ficar nela:
 1. `preview` / `feap` / `entity set` / `abrir app` → PB-FIORI-PREVIEW
 2. `executar` / `f8` / `transação` / `rdt` → PB-GUI
 3. `dump` / `st22` no meio de um teste já em andamento → PB-DUMP (não trocar para PB-ANALISE)
-4. `crie` / `altere` / `adicione` / `grave` → PB-ALTERAR
-5. `action` / `postman` / `odata` / `try it out` → PB-RAP
-6. `cds` / `successor` sozinho → PB-CDS
-7. `clean core` / `nível a-d` / `cloud-ready` / `classificar pacote` / `ABAP_CLOUD_READINESS` → PB-CLEAN-CORE
-8. `analise` / `explique` / `causa` sem gravar → PB-ANALISE
-9. `não ativa` / `sintaxe` sem outro pedido → PB-ATIVACAO
-10. Resto → seção 8
+4. `sql lento` / `odata lento` / `st05` / `cds_sql` → PB-SQL
+5. `segw` / `dpc_ext` / `migrar odata` → PB-SEGW
+6. `gerar serviço rap` / `criar stack rap` / `scaffold rap` → PB-RAP-GERAR
+7. `determinação` / `validação rap` / `behavior pool` → PB-RAP-LOGIC
+8. `abap unit` / `teste unitário` / `cds test` → PB-UNIT
+9. `cube` / `analytical query` / `star schema` → PB-ANALYTICS
+10. `fiori elements` / `lrop` / `@ui.` → PB-FE
+11. `modernizar ui5` / `ui5 typescript` / `freestyle ui5` → PB-UI5
+12. `review transporte` / `pending draft` / `transportes abertos` / `ordem de transporte` → PB-TR
+13. `código morto` / `scmon` / `susg` → PB-UNUSED
+14. `documentar pacote` / `onboarding docs` → PB-DOC
+15. `dossiê` / `migração ecc` → PB-DOSSIER
+16. `clean core` / `nível a-d` / `cloud-ready` / `ABAP_CLOUD_READINESS` → PB-CLEAN-CORE
+17. `crie` / `altere` / `adicione` / `grave` → PB-ALTERAR
+18. `action` / `postman` / `odata` / `try it out` → PB-RAP
+19. `cds` / `successor` sozinho → PB-CDS
+20. `analise` / `explique` / `causa` sem gravar → PB-ANALISE
+21. `não ativa` / `sintaxe` sem outro pedido → PB-ATIVACAO
+22. Resto → seção 8
 
 Encadear um playbook já listado abaixo não é inventar. Inventar é criar um PB-X novo no meio da execução.
 
@@ -100,6 +126,18 @@ Encadear um playbook já listado abaixo não é inventar. Inventar é criar um P
 |---|---|---|
 | Preview Fiori, FEAP, entity set, abrir app | PB-FIORI-PREVIEW | MCP, trava (logon no navegador) |
 | Executar transação, programa, evidência ou RDT | PB-GUI | arquivo, trava, dump, RDT |
+| SQL/OData lento | PB-SQL | dump |
+| Migrar SEGW V2 → RAP V4 | PB-SEGW | RAP-GERAR, FE ou UI5 (um só) |
+| Gerar stack RAP novo | PB-RAP-GERAR | stack, CDS, ativação |
+| Determinação / validação / action no pool | PB-RAP-LOGIC | RAP, ativação |
+| ABAP Unit / CDS Test Double | PB-UNIT | alterar |
+| Cube / query analítica | PB-ANALYTICS | CDS, stack |
+| Fiori Elements LROP | PB-FE | RAP, preview |
+| Modernizar UI5 freestyle | PB-UI5 | FE (não os dois) |
+| Transporte: review ou backlog | PB-TR | analise |
+| Código morto SCMON/SUSG | PB-UNUSED | clean core |
+| Documentar pacote | PB-DOC | analise |
+| Dossiê ECC→S/4 | PB-DOSSIER | clean core, unused, ATC |
 | Criar ou alterar objeto | PB-ALTERAR | CDS, RAP, stack, ativação |
 | Action, Fiori (popup/OData), Postman | PB-RAP | stack, ativação, preview |
 | Só CDS ou successor | PB-CDS | alterar |
@@ -127,13 +165,14 @@ Passos:
 2. Client 110 ou 120: não inventar um MCP. Se só existirem conexões 100 e 130, ler o repositório por uma delas e avisar que o teste GUI precisa do mandante pedido.
 3. Não existe seletor de destination dentro da ferramenta. Não misturar print ou massa de um mandante com teste de outro.
 4. Ler objeto com a ferramenta do MCP. Não afirmar que leu se a chamada não ocorreu.
-5. Preferir dependências e o método ou o trecho. Não baixar o sistema inteiro.
-6. Ferramenta de leitura (SAPRead, SAPContext e equivalentes) não executa transação. Sem ferramenta de SAP GUI, não fingir F8.
-7. Não inventar ferramenta que o MCP não expõe. Sem escrita, não gravar por ADT, curl, senha do `mcp.json` nem outro atalho.
-8. Não repetir senha, token ou cookie do `mcp.json`.
-9. Escrita libera só com frase desta conversa: "liberar escrita", "pode gravar", "grave no sistema", "altere no sistema". Não libera: "corrija", "altere o código", "me passa o trecho", "faça a correção".
-10. Mesmo com frase de liberação, se não houver ferramenta de escrita, entregar o trecho. Não gravar por atalho.
-11. GitHub: se o MCP do GitHub recusar escrita, usar `git` local e `git push`.
+5. Preferir dependências e o método ou o trecho. Não baixar o sistema inteiro. CLAS: `method="*"` para assinaturas; DDLS: `include="elements"` para catálogo; FUGR: `expand_includes=true`. BDEF não entra em SAPContext — usar `impact` na CDS raiz e ler o pool (`implementation in class`).
+6. Antes de gerar RAP, cube, query analítica ou migrar SEGW: `SAPRead(type="SYSTEM")` e `COMPONENTS` (`SAP_BASIS`). Não inventar teto de sintaxe. RAP indisponível → parar. Query `analytical_query` exige SAP_BASIS 7.57+; `rap.available` sozinho não prova isso.
+7. Ferramenta de leitura (SAPRead, SAPContext e equivalentes) não executa transação. Sem ferramenta de SAP GUI, não fingir F8.
+8. Não inventar ferramenta que o MCP não expõe. Sem escrita, não gravar por ADT, curl, senha do `mcp.json` nem outro atalho.
+9. Não repetir senha, token ou cookie do `mcp.json`.
+10. Escrita libera só com frase desta conversa: "liberar escrita", "pode gravar", "grave no sistema", "altere no sistema". Não libera: "corrija", "altere o código", "me passa o trecho", "faça a correção".
+11. Mesmo com frase de liberação, se não houver ferramenta de escrita, entregar o trecho. Não gravar por atalho.
+12. GitHub: se o MCP do GitHub recusar escrita, usar `git` local e `git push`.
 
 Prova: o código veio de uma leitura real; o teste GUI, se houver, está no mandante pedido.
 
@@ -226,10 +265,12 @@ KW: `analise` `explique` `por que` `causa` `revisar`
 
 Passos:
 
-1. Ler o objeto e só a dependência que a pergunta toca, pelo PB-MCP.
-2. Separar fato observado, causa confirmada e hipótese.
-3. Se a correção for óbvia, entregar o trecho e o ponto de colagem.
-4. Não gravar. Não ampliar para refatoração.
+1. Resolver tipo (`SAPSearch`) se o usuário só deu o nome. Ler o objeto e só a dependência que a pergunta toca, pelo PB-MCP. Preferir `SAPContext` action `deps` antes de baixar fonte inteira.
+2. CLAS: listar métodos (`method="*"`) e, se for behavior pool, `include="implementations"` (`lhc_*`). CDS: `include="elements"`. BDEF: ler `managed`/`unmanaged`/`projection`, `implementation in class`, CDS raiz; `SAPContext` `impact` na CDS, não no BDEF. FUGR: `expand_includes=true`. Dynpro/GUI status não vêm por ADT — dizer isso se pedirem a tela.
+3. Separar fato observado, causa confirmada e hipótese.
+4. ATC só se o usuário pediu qualidade. Achado em `$TMP` vazio = skip, não limpo.
+5. Se a correção for óbvia, entregar o trecho e o ponto de colagem.
+6. Não gravar. Não ampliar para refatoração. Documentar pacote inteiro = PB-DOC.
 
 Prova: a causa está ligada a um trecho lido, e o usuário sabe o que fazer com ela.
 
@@ -285,7 +326,9 @@ Passos:
 6. Campo caractere que representa flag: somente `X`, `x` ou vazio, conforme o serviço. Qualquer outro valor deve ir para `reported` e `failed` com `%cid` e `RETURN`. Calcular um booleano interno sem preencher `failed` não devolve erro ao Postman.
 7. Static function import pode não aparecer no Swagger da entidade. Confirmar em `$metadata` antes de dizer que a action sumiu.
 8. Não criar binding, action ou parâmetro extra se o usuário não pediu.
-9. Se o pedido incluir abrir o app Fiori ou Preview do binding, encadear o PB-FIORI-PREVIEW. Não tratar Try it out / Postman como preview da UI.
+9. Lógica no behavior pool: `READ`/`MODIFY ENTITIES` `IN LOCAL MODE`; erro em `failed` + `reported` com `%tky` (ou `%cid` se static). Alias de `failed-<alias>` em minúsculas como no BDEF. Não fazer `SELECT` direto na persistência em ABAP Cloud.
+10. Determinação/validação nova no BDEF existente: PB-RAP-LOGIC. Stack RAP do zero: PB-RAP-GERAR.
+11. Se o pedido incluir abrir o app Fiori ou Preview do binding, encadear o PB-FIORI-PREVIEW. Não tratar Try it out / Postman como preview da UI.
 
 Prova: o objeto ativa e a chamada devolve o comportamento pedido, inclusive o erro quando a entrada é inválida.
 
@@ -329,9 +372,11 @@ Passos:
 1. Confirmar client pelo PB-MCP. Sem `ESCRITA_LIBERADA` ou sem ferramenta de escrita: entregar o trecho e o ponto de colagem. Não gravar.
 2. Ler o objeto e só a dependência que a mudança toca. `SÓ_OBJETO_NOMEADO`.
 3. Fazer a menor alteração que resolve o pedido. `NÃO_CRIAR_EXTRA`. `NÃO_AMPLIAR`.
-4. Successor released em código novo: PB-CDS.
-5. Se for stack RAP, ativar pelo PB-STACK.
-6. Ativar. Rodar o cenário que motivou a mudança. Regressão só do comportamento que a mudança pode quebrar.
+4. Successor released em código novo: PB-CDS. ATC de migração: um achado de cada vez; quickfix SAP antes de inventar patch (`SAPDiagnose` `quickfix`).
+5. Stack RAP novo (tabela+CDS+BDEF+serviço): PB-RAP-GERAR, não improvisar nomes nem segundo binding.
+6. Método de classe / pool RAP: preferir editar só o método, não regravar a classe inteira.
+7. Se for stack RAP já existente, ativar pelo PB-STACK.
+8. Ativar. Rodar o cenário que motivou a mudança. Regressão só do comportamento que a mudança pode quebrar.
 
 Prova: ativou e o cenário que falhava passa.
 
@@ -367,10 +412,182 @@ Passos:
 4. Classificar cada API SAP usada no Cloudification Repository (`https://sap.github.io/abap-atc-cr-cv-s4hc/`). Objeto customizado Z/Y herda o pior nível das APIs que consome.
 5. Permitido no Clean Core de código novo só se estiver **released** (Nível A). `classicAPI` = B, não A. `noAPI` / `internal` / `notToBeReleased` / ausente no viewer = não liberar; dizer o gap. Não inventar successor.
 6. Entregar tabela: objeto Z/Y, APIs SAP, estado CR, nível A–D, successor se houver, ação. Não refatorar nem gravar objeto SAP nesta auditoria, salvo o usuário ter pedido correção com `ESCRITA_LIBERADA`.
+7. Aposentadoria: primeiro PB-UNUSED (o que nem roda); classificar A–D só o USED. Corrigir ATC/successor = um objeto de cada vez (skill `migrate-custom-code`). Interface RFC/IDoc/SEGW = Note 3690029 / PB-DOSSIER, não esta escala.
 
 Prova: cada objeto Z/Y do escopo tem nível A–D com evidência (ATC, CR ou de-para). Sem evidência = incompleto, não “Nível A”.
 
 Parar: ATC skip em `$TMP` sem outro evidência; MCP docs/CR indisponível — classificar o que foi lido e marcar o gap.
+
+
+### PB-SQL — OData / SQL lento
+
+Gatilho: relatório, lista Fiori, CDS ou OData lento, timeout, "onde está o tempo".
+KW: `sql lento` `odata lento` `st05` `cds_sql` `odata_perf` `timeout odata`
+Skill: `plugins/arc-1-skills/debug-slow-sql/SKILL.md`
+
+Passos (parar no degrau que explicar):
+
+1. Ler o gerador, não só o SQL literal: CDS/SADL/search help/DPC. `LIKE '%x%'` gerado não aparece no grep do SELECT.
+2. OData: `SAPDiagnose` `odata_perf` com path host-relative (`/sap/opu/odata…`). Veredito `db` → CDS/SQL; `app` → ABAP/SADL (N+1 de `$expand`); `framework` → cache frio; `auth` → ICF/DCL. Usar `gwtotal`/`gwappdb`, não wall-clock.
+3. DB: `cds_sql` + query com o filtro real. Igualdade na chave tão lenta quanto `LIKE` → o custo é o view (join/`DISTINCT`/`$count`), não o wildcard.
+4. App: profiler `traces` / `dbAccesses`. HTTP: armar `trace_start` e não fazer outra chamada MCP até o usuário reproduzir.
+5. ST05 só para statement + plano. Armar precisa escrita; desarmar sempre. Sem escrita, parar no degrau 2 e passar o passo GUI.
+6. ATC `PERFORMANCE_DB` é extra, não substitui medida. PROD: não armar trace sem o usuário nomear o ambiente.
+
+Prova: veredito db/app/framework/auth + statement ou hot path + correção mínima.
+
+### PB-SEGW — SEGW V2 → RAP V4
+
+Gatilho: migrar serviço Gateway/SEGW para RAP.
+KW: `segw` `dpc_ext` `mpc_ext` `migrar odata` `gateway v2`
+Skill: `plugins/arc-1-skills/migrate-segw-to-rap/SKILL.md`
+
+Passos:
+
+1. O usuário nomeia o serviço SEGW, a classe MPC/DPC ou o pacote. Sem isso, parar e pedir só o nome.
+2. Ler MPC/DPC (`expand_includes` / métodos `*_get_entityset`). O V2 legado permanece; o RAP novo é outro SRVB/pacote. Não misturar DPC V2 e RAP no mesmo binding.
+3. Sempre projeção `ZC_*` exposta no serviço; raiz `ZI_*`/`ZR_*` não vai no binding. `provider contract` só na projeção raiz. Composição managed sem `on`. Tabela draft: nomes normalizados sem underscore (`projectid`, não `project_id`).
+4. Pacote alvo: o que o usuário nomeou (ou filho `…_RAP` só se ele pedir). Respeitar `SAP_ALLOWED_PACKAGES`. Não criar pacote extra sozinho.
+5. UI depois do backend: **um** caminho — PB-FE ou PB-UI5, nunca os dois.
+
+Prova: SRVB V4 ativo com entity sets do `expose … as`; o serviço V2 original intacto.
+
+### PB-RAP-GERAR — Stack RAP novo
+
+Gatilho: criar serviço/BO RAP do zero (tabela, CDS, BDEF, SRVD, SRVB, pool).
+KW: `gerar serviço rap` `criar stack rap` `scaffold rap` `business object rap`
+Skill: `plugins/arc-1-skills/generate-rap-service/SKILL.md` (produção: `generate-rap-service-researched`)
+
+Passos:
+
+1. Probe RAP (`SYSTEM`/`COMPONENTS`). Sem RAP, parar. Pacote: o nomeado e permitido; `$TMP` só se o usuário pedir. Sem transporte em pacote transportável, parar.
+2. Padrão silencioso: managed, UUID, um root, CRUD, OData V4, `strict ( 2 )`. Draft só se o usuário pediu UI Fiori editável. On-prem 7.5x: `syuname`/`timestampl`, flag `abap.char(1)`, `projection;` no BDEF de projeção.
+3. Nomes SAP: tabela `Z<ENT>_D`, `ZI_`, `ZC_`, `ZBP_I_`, `ZUI_…_O4`. Copiar convenção do pacote se já existir RAP lá (researched).
+4. `NÃO_CRIAR_EXTRA`: um binding, uma action set. Produção: apresentar a tabela de artefatos e só gravar com `ESCRITA_LIBERADA`.
+5. Ativar pelo PB-STACK. Pool: `scaffold_rap_handlers` + `edit_method`, não regravar a classe inteira se o save genérico falhar.
+
+Prova: objetos nomeados ativos; `$metadata` do binding responde.
+
+### PB-RAP-LOGIC — Determinação, validação, action no pool
+
+Gatilho: preencher lógica de BDEF/pool já existente.
+KW: `determinação` `validação rap` `behavior pool` `lhc_` `implementar bdef`
+Skill: `plugins/arc-1-skills/generate-rap-logic/SKILL.md`
+
+Passos:
+
+1. Ler BDEF + CDS + classe `implementation in class`. Não criar stack novo.
+2. Implementar só o que o usuário nomeou; se pediu "as determinações vazias", só stubs vazios. Não inventar declaração nova no BDEF.
+3. `IN LOCAL MODE`; `failed`+`reported`; `%tky`. Assinatura ausente: scaffold/quickfix, depois o corpo.
+4. Ativar BDEF + classe juntos. Preview só se pediram.
+
+Prova: método ativo; cenário de erro preenche `failed`.
+
+### PB-UNIT — ABAP Unit e CDS Test Double
+
+Gatilho: gerar ou rodar teste unitário de classe ou CDS.
+KW: `abap unit` `teste unitário` `test double` `cds test` `cdstdf`
+Skills: `generate-abap-unit-test`, `generate-cds-unit-test`
+
+Passos:
+
+1. CLAS: `testclasses` local `ltc_*`, doubles por interface, `HARMLESS`/`SHORT`. Não duplicar teste que já existe.
+2. CDS: CDS Test Double; no 8.16+ `SAPDiagnose` `cds_testcases`. Pacote de teste: o permitido; `$TMP` só se pedido.
+3. Rodar `unittest`. Não gravar produção real. Sem escrita: entregar a classe de teste.
+
+Prova: teste executou; falha do teste não se disfarça de APROVADO funcional.
+
+### PB-ANALYTICS — Cube e analytical query
+
+Gatilho: star schema, cube, query analítica, KPI CDS.
+KW: `cube` `analytical query` `star schema` `analytics.dataCategory`
+Skills: `generate-analytics-star-schema`, `generate-cds-analytical-query`
+
+Passos:
+
+1. Cube primeiro (`#CUBE` + dimensões `#DIMENSION`/`#TEXT`). Query só em cima de cube existente.
+2. Query: `provider contract analytical_query`; authorization `#NOT_ALLOWED`; nome ≤ 28 caracteres. Exige SAP_BASIS 7.57+.
+3. Reusar dimensão released (`I_Country`, etc.) antes de criar `ZI_*_Dim`. Ativar o conjunto junto (referências cruzadas).
+
+Prova: cube/query ativos; query não dispara em view transacional.
+
+### PB-FE — Fiori Elements V4 (LROP)
+
+Gatilho: app Fiori Elements, LROP, anotações `@UI`.
+KW: `fiori elements` `lrop` `lineitem` `@ui.` `list report`
+Skill: `plugins/arc-1-skills/convert-ui5-to-fiori-elements/SKILL.md`
+
+Passos:
+
+1. Precisa de SRVB V4 publicado. Sem MCP Fiori/UI5: entregar só anotações CDS/DDLX (`@UI.LineItem`, `@UI.HeaderInfo`, actions) — não fingir scaffold do app.
+2. Não correr PB-UI5 no mesmo pedido. Custom control que o template não cobre: dizer o limite, não inventar XML FE.
+3. Preview: PB-FIORI-PREVIEW. Anotação incerta: showcase RAP FE, não memória.
+
+Prova: lista/object page da entity set correta; login tratado.
+
+### PB-UI5 — Modernizar UI5 freestyle
+
+Gatilho: converter app UI5 JS clássico para TypeScript / FCL.
+KW: `modernizar ui5` `ui5 typescript` `flexiblecolumnlayout` `freestyle ui5`
+Skill: `plugins/arc-1-skills/modernize-ui5-app/SKILL.md`
+
+Passos:
+
+1. Caminho paralelo ao PB-FE — escolher um. HTTP 200 não prova UI: precisa render (página em branco é falha).
+2. Sem MCP UI5/browser: entregar plano e diffs; não fingir app gerada.
+3. Não alterar o RAP/SEGW neste playbook.
+
+Prova: app abre e o fluxo pedido aparece, não só o servidor respondendo.
+
+### PB-TR — Transporte (review ou backlog)
+
+Gatilho: o que mudou no request, pending, transportes abertos.
+KW: `review transporte` `o que mudou` `pending draft` `transportes abertos` `se09` `ordem de transporte`
+Skills: `sap-transport-review`, `sap-transport-overview`
+
+Passos:
+
+1. Backlog do sistema: `SAPTransport` `list` `summary=true` (todos os users se pediram o sistema). Sem diffs. Flags: vazio, sem target (local), objeto no mesmo CTS key em dois requests.
+2. Review de um request ou draft: `get` o id; `SAPRead` `action="diff"`. Pending = `active`→`inactive`. Request aberto sem snapshot "antes" = `baseline unavailable`, não "nada mudou".
+3. LIMU/METH/REPS não são tipo de `SAPRead`. SRVB/DOMA: metadata, sem diff de fonte. Cap ~40 objetos: tabela de contagem, expandir só o pedido.
+4. Não liberar/ativar transporte neste playbook.
+
+Prova: tabela do delta ou do backlog com cobertura declarada.
+
+### PB-UNUSED — Código Z/Y sem uso de runtime
+
+Gatilho: código morto, aposentar Z, SCMON/SUSG.
+KW: `código morto` `unused` `scmon` `susg` `aposentar z`
+Skill: `plugins/arc-1-skills/sap-unused-code/SKILL.md`
+
+Passos:
+
+1. Exige pacote, prefixo ou lista. Sem filtro, parar e pedir o escopo. Não apagar objeto.
+2. Precisa SQL livre + auth nas tabelas SCMON/SUSG. Zero linhas nos dois → parar e dizer para ativar SCMON; não chutar UNUSED.
+3. Runtime (SCMON fresco ou SUSG histórico) + where-used estático. Classes: USED / LIKELY_UNUSED / UNUSED / INDETERMINATE. Janela curta não prova relatório anual.
+4. Encadear PB-CLEAN-CORE só no USED, se pedirem.
+
+Prova: classificação com fonte de dados e janela; lista UNUSED sem delete.
+
+### PB-DOC — Documentar pacote ou lista
+
+Gatilho: documentar pacote, onboarding, handoff em Markdown.
+KW: `documentar pacote` `documentar objetos` `onboarding docs`
+Skill: `plugins/arc-1-skills/sap-object-documenter/SKILL.md`
+
+Passos: enumerar DEVC/lista; por objeto: propósito, estilo Classic/Modern/Mixed, deps profundidade 1. Cap 100 objetos. Não gravar SAP. Um objeto interativo = PB-ANALISE.
+
+Prova: Markdown com cada objeto do escopo ou pedido para estreitar.
+
+### PB-DOSSIER — Dossiê ECC → S/4
+
+Gatilho: dossiê de migração, prontidão S/4 de pacote, interfaces + custom code juntos.
+KW: `dossiê` `migração ecc` `s/4 readiness`
+Skill: `plugins/arc-1-skills/sap-migration-dossier/SKILL.md`
+
+Passos: inventário + ATC + Clean Core A–D (extensibilidade) + UNUSED se houver SCMON + interfaces (RFC/IDoc/SEGW, Note 3690029). Relatório curto no chat; arquivo só se pedirem. Não misturar as duas escalas A–D.
+
+Prova: contagens + riscos + gaps de evidência + próximo passo.
 
 ### PB-SOMENTE-LEITURA
 
@@ -409,7 +626,7 @@ Nunca gravar senha, token, cookie, segredo, credencial ou dado pessoal desnecess
 
 ## 3. Escopo
 
-Aplicar integralmente para: teste de programas; teste funcional; teste de transações; teste SAP GUI; criação de evidências; preenchimento de RDT; criação de programas; criação de classes; criação ou modificação de CDS; criação ou modificação de RAP; testes Fiori; classificação Clean Core A–D; ATC cloud-ready; análise de erros; dumps; erros de ativação; análise de arquivos de entrada e saída; automação SAP GUI; modificações solicitadas pelo usuário.
+Aplicar integralmente para: teste de programas; teste funcional; teste de transações; teste SAP GUI; criação de evidências; preenchimento de RDT; criação de programas; criação de classes; criação ou modificação de CDS; criação ou modificação de RAP; testes Fiori; Fiori Elements; UI5; SQL/OData lento; SEGW→RAP; ABAP Unit; analytics CDS; transportes; código morto; documentação de pacote; dossiê de migração; classificação Clean Core A–D; ATC cloud-ready; análise de erros; dumps; erros de ativação; análise de arquivos de entrada e saída; automação SAP GUI; modificações solicitadas pelo usuário.
 
 ## 4. Regra de autorização de escrita
 
@@ -612,6 +829,7 @@ Situação nova: identificar, resolver, confirmar, abstrair, transformar em regr
 
 ## 47. Aprendizados atuais
 
+- 2026-09-28 — Skills ARC-1 (`arc-mcp/arc-1/skills`) incorporadas como playbooks: SQL/OData, SEGW→RAP, gerar RAP, lógica de pool, unit test, analytics, Fiori Elements vs UI5 (um caminho), transporte, unused, documentar, dossiê. Texto completo em `plugins/arc-1-skills/`.
 - 2026-09-28 — Skill `sap-clean-core-atc` (ARC-1) não estava neste repositório. Auditoria de pacote Z/Y usa Níveis A–D da Note 3578329 (não misturar com a escala de 3 níveis da Note 3690029). ATC vazio em `$TMP` é skip, não limpo. Código novo = Nível A / released. Classificação não grava objeto SAP.
 - 2026-09-28 — Eclipse/ADT não tem allowlist de pacote. `SAP_ALLOWED_PACKAGES` do MCP do mandante vale também na escrita via Eclipse: se o pacote real não casar, não salvar/ativar; só ler. Não furar o teto do MCP pelo ADT.
 - 2026-09-28 — Léxico IA no topo: casar palavras-chave do pedido ao playbook antes de agir. Tokens `SÓ_OBJETO_NOMEADO`, `NÃO_CRIAR_EXTRA`, `NÃO_AMPLIAR`, `ESCRITA_LIBERADA`, `PROVA`, `PARAR`.
