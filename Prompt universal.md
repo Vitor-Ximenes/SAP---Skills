@@ -72,6 +72,7 @@ Estas regras não caem, mesmo se o pedido desta conversa disser o contrário:
 - não alterar QAS ou PRD sem o usuário nomear esse ambiente
 - não falsificar evidência
 - não declarar APROVADO sem validação
+- não usar Eclipse/ADT para gravar fora de `SAP_ALLOWED_PACKAGES` do MCP daquele mandante (abrir para ler pode)
 
 Fora isso: o pedido desta conversa vence o arquivo; o playbook vence a seção genérica; chat antigo perde.
 
@@ -572,6 +573,7 @@ Situação nova: identificar, resolver, confirmar, abstrair, transformar em regr
 
 ## 47. Aprendizados atuais
 
+- 2026-09-28 — Eclipse/ADT não tem allowlist de pacote. `SAP_ALLOWED_PACKAGES` do MCP do mandante vale também na escrita via Eclipse: se o pacote real não casar, não salvar/ativar; só ler. Não furar o teto do MCP pelo ADT.
 - 2026-09-28 — Léxico IA no topo: casar palavras-chave do pedido ao playbook antes de agir. Tokens `SÓ_OBJETO_NOMEADO`, `NÃO_CRIAR_EXTRA`, `NÃO_AMPLIAR`, `ESCRITA_LIBERADA`, `PROVA`, `PARAR`.
 - 2026-09-28 — Preview Fiori: marcar a entity set do `expose ... as` do service binding nomeado; só então Preview; no navegador tratar logon se aparecer. Não clicar Preview sem seleção.
 - 2026-09-24 — MCP DEV é somente leitura até o usuário liberar escrita. "Corrija" não libera. Sem ferramenta de escrita, entregar o trecho. Não gravar por curl nem repetir senha do `mcp.json`. Repositório é o mesmo no SID; mandante importa para dado e teste GUI. Sem ferramenta de SAP GUI, não fingir F8.
