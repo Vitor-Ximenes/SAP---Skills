@@ -1,0 +1,21 @@
+{
+  "name": "sap-clean-core-atc",
+  "description": "Audit a package of custom code and bucket every Z/Y object into Clean Core Levels A-D based on the SAP APIs it uses. Use when asked to classify a package for clean core, clean core readiness report, Level A-D audit, or is this code cloud-ready.",
+  "version": "1.3.0",
+  "author": {
+    "name": "arc-mcp",
+    "url": "https://github.com/arc-mcp/arc-1"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/arc-mcp/arc-1/blob/main/skills/sap-clean-core-atc/SKILL.md",
+  "repository": "https://github.com/arc-mcp/arc-1",
+  "keywords": [
+    "abap",
+    "atc",
+    "clean-core",
+    "cloud-ready",
+    "level-a",
+    "sap"
+  ],
+  "category": "abap"
+}

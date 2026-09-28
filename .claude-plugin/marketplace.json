@@ -108,6 +108,21 @@
       "license": "GPL-3.0"
     },
     {
+      "name": "sap-clean-core-atc",
+      "source": "./plugins/sap-clean-core-atc",
+      "description": "Audit a package of custom Z/Y code and bucket objects into Clean Core Levels A-D based on the SAP APIs they use. Use for classify this package for clean core, cloud-ready ATC, ABAP_CLOUD_READINESS, or Level A-D audit. Source: arc-mcp/arc-1.",
+      "version": "1.3.0",
+      "category": "abap",
+      "keywords": [
+        "abap",
+        "atc",
+        "clean core",
+        "cloud-ready",
+        "sap",
+        "sap-clean-core-atc"
+      ]
+    },
+    {
       "name": "sap-api-style",
       "source": "./plugins/sap-api-style",
       "description": "This skill provides comprehensive guidance for documenting SAP APIs following the SAP API Style Guide standards. It should be used when creating or reviewing API documentation for REST, OData, Java, JavaScript, .NET, or C/C++ APIs. The skill covers naming conventions, documentation comments, OpenAPI specifications, quality checklists, deprecation policies, and manual documentation templates. It ensures consistency with SAP API Business Hub standards and industry best practices. Keywords: SAP API, REST, OData, OpenAPI, Swagger, Javadoc, JSDoc, XML documentation, API Business Hub, API naming, API deprecation, x-sap-stateInfo, Entity Data Model, EDM, documentation tags, API quality, API templates",

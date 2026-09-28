@@ -48,6 +48,7 @@ Palavra-chave do pedido → playbook:
 | `crie` `criar` `adicione` `adicionar` `altere` `alterar` `grave` `modifique` `inclua o campo` | PB-ALTERAR |
 | `action` `postman` `odata` `try it out` `function import` `popup da action` | PB-RAP |
 | `cds` `view entity` `successor` `sucessor` `ddic` | PB-CDS |
+| `clean core` `nível a` `nível b` `nível c` `nível d` `level a` `cloud-ready` `classificar pacote` `ABAP_CLOUD_READINESS` `prontidão cloud` | PB-CLEAN-CORE |
 | `analise` `explique` `por que` `causa` `revisar` sem pedir gravar | PB-ANALISE |
 | `não ativa` `erro de ativação` `sintaxe` `activation` | PB-ATIVACAO |
 | `abra no eclipse` `abrir no adt` `abra o objeto` | abrir **só** o objeto nomeado no ADT; não criar nada |
@@ -88,9 +89,10 @@ Se dois principais servirem, usar esta ordem e ficar nela:
 4. `crie` / `altere` / `adicione` / `grave` → PB-ALTERAR
 5. `action` / `postman` / `odata` / `try it out` → PB-RAP
 6. `cds` / `successor` sozinho → PB-CDS
-7. `analise` / `explique` / `causa` sem gravar → PB-ANALISE
-8. `não ativa` / `sintaxe` sem outro pedido → PB-ATIVACAO
-9. Resto → seção 8
+7. `clean core` / `nível a-d` / `cloud-ready` / `classificar pacote` / `ABAP_CLOUD_READINESS` → PB-CLEAN-CORE
+8. `analise` / `explique` / `causa` sem gravar → PB-ANALISE
+9. `não ativa` / `sintaxe` sem outro pedido → PB-ATIVACAO
+10. Resto → seção 8
 
 Encadear um playbook já listado abaixo não é inventar. Inventar é criar um PB-X novo no meio da execução.
 
@@ -101,6 +103,7 @@ Encadear um playbook já listado abaixo não é inventar. Inventar é criar um P
 | Criar ou alterar objeto | PB-ALTERAR | CDS, RAP, stack, ativação |
 | Action, Fiori (popup/OData), Postman | PB-RAP | stack, ativação, preview |
 | Só CDS ou successor | PB-CDS | alterar |
+| Classificar pacote Clean Core A–D, cloud-ready, ATC readiness | PB-CLEAN-CORE | CDS, analise |
 | Só analisar, sem gravar | PB-ANALISE | dump |
 | Objeto não ativa | PB-ATIVACAO | stack |
 
@@ -241,6 +244,7 @@ Passos:
 2. Em código novo, usar o successor released. Exemplos já usados: `KNB1` → `I_CustomerCompany`; `LFB1` → `I_SupplierCompany`; `KNA1` → `I_Customer`; `LFA1` → `I_Supplier`; `ADRC` → `I_Address_2`.
 3. Não trocar solução existente sem necessidade.
 4. Se o usuário trouxer um par novo, registrar no de-para do workspace e no store pessoal.
+5. Código novo neste projeto = Nível A (só API released). Classificar pacote existente A–D = PB-CLEAN-CORE; não misturar com a escala de integração (SAP Note 3690029).
 
 Prova: o código novo aponta para o successor, ou ficou documentado por que o clássico permanece.
 
@@ -333,6 +337,41 @@ Prova: ativou e o cenário que falhava passa.
 
 Somente leitura: entregar o código e onde colar. Não dizer que gravou.
 
+
+### PB-CLEAN-CORE — Classificar código customizado A–D
+
+Gatilho: classificar pacote/objeto para Clean Core, relatório de prontidão cloud, auditoria Nível A–D, ou ATC ABAP Cloud Readiness.
+KW: `clean core` `nível a` `nível b` `nível c` `nível d` `level a` `cloud-ready` `classificar pacote` `ABAP_CLOUD_READINESS` `prontidão cloud`
+
+Skill completa no mesmo repositório: `plugins/sap-clean-core-atc/skills/sap-clean-core-atc/SKILL.md` (origem [arc-mcp/arc-1](https://github.com/arc-mcp/arc-1/blob/main/skills/sap-clean-core-atc/SKILL.md)).
+
+Escalas distintas — não misturar:
+
+- Extensibilidade (SAP Note 3578329): Níveis A, B, C, D. É esta auditoria.
+- Integração (SAP Note 3690029): 3 níveis. Só se o pedido for interface/iPaaS/Published API → skill `sap-api-policy`.
+
+Níveis (extensibilidade):
+
+| Nível | Significa | Exemplos |
+|---|---|---|
+| A | só APIs released (Cloudification `released`) | `I_*`, `C_*`, `CL_*`/`IF_*` released, RAP BO released |
+| B | API clássica com successor conhecido | `KNA1`, `MARA`, `BAPI_*` — Cloudification `classicAPI` |
+| C | API interna; successor existe; dá para adaptar | objeto `internal` com successor no CR |
+| D | sem successor e sem workaround; reescrever | `noAPI` / `notToBeReleased` sem alternativa |
+
+Passos:
+
+1. Inventariar o pacote ou o objeto nomeado (`DEVC` / TADIR). `$TMP` e objeto local: ATC costuma devolver vazio — isso é skip, não “limpo”.
+2. Dependências: `SAPContext` action `deps` (e `usages` se precisar). Completar com `SELECT FROM`, `CALL FUNCTION`, CDS `as select from`.
+3. ATC: `SAPDiagnose` action `atc` no objeto; variante `ABAP_CLOUD_READINESS` se existir (`atc_variants`). Sem variante conhecida, usar a default do sistema. Achado de successor → aplicar PB-CDS / de-para `docs/sap-ddic-to-cds-successors.md`.
+4. Classificar cada API SAP usada no Cloudification Repository (`https://sap.github.io/abap-atc-cr-cv-s4hc/`). Objeto customizado Z/Y herda o pior nível das APIs que consome.
+5. Permitido no Clean Core de código novo só se estiver **released** (Nível A). `classicAPI` = B, não A. `noAPI` / `internal` / `notToBeReleased` / ausente no viewer = não liberar; dizer o gap. Não inventar successor.
+6. Entregar tabela: objeto Z/Y, APIs SAP, estado CR, nível A–D, successor se houver, ação. Não refatorar nem gravar objeto SAP nesta auditoria, salvo o usuário ter pedido correção com `ESCRITA_LIBERADA`.
+
+Prova: cada objeto Z/Y do escopo tem nível A–D com evidência (ATC, CR ou de-para). Sem evidência = incompleto, não “Nível A”.
+
+Parar: ATC skip em `$TMP` sem outro evidência; MCP docs/CR indisponível — classificar o que foi lido e marcar o gap.
+
 ### PB-SOMENTE-LEITURA
 
 Gatilho: MCP sem escrita, ou o usuário não liberou gravação.
@@ -370,7 +409,7 @@ Nunca gravar senha, token, cookie, segredo, credencial ou dado pessoal desnecess
 
 ## 3. Escopo
 
-Aplicar integralmente para: teste de programas; teste funcional; teste de transações; teste SAP GUI; criação de evidências; preenchimento de RDT; criação de programas; criação de classes; criação ou modificação de CDS; criação ou modificação de RAP; testes Fiori; análise de erros; dumps; erros de ativação; análise de arquivos de entrada e saída; automação SAP GUI; modificações solicitadas pelo usuário.
+Aplicar integralmente para: teste de programas; teste funcional; teste de transações; teste SAP GUI; criação de evidências; preenchimento de RDT; criação de programas; criação de classes; criação ou modificação de CDS; criação ou modificação de RAP; testes Fiori; classificação Clean Core A–D; ATC cloud-ready; análise de erros; dumps; erros de ativação; análise de arquivos de entrada e saída; automação SAP GUI; modificações solicitadas pelo usuário.
 
 ## 4. Regra de autorização de escrita
 
@@ -573,6 +612,7 @@ Situação nova: identificar, resolver, confirmar, abstrair, transformar em regr
 
 ## 47. Aprendizados atuais
 
+- 2026-09-28 — Skill `sap-clean-core-atc` (ARC-1) não estava neste repositório. Auditoria de pacote Z/Y usa Níveis A–D da Note 3578329 (não misturar com a escala de 3 níveis da Note 3690029). ATC vazio em `$TMP` é skip, não limpo. Código novo = Nível A / released. Classificação não grava objeto SAP.
 - 2026-09-28 — Eclipse/ADT não tem allowlist de pacote. `SAP_ALLOWED_PACKAGES` do MCP do mandante vale também na escrita via Eclipse: se o pacote real não casar, não salvar/ativar; só ler. Não furar o teto do MCP pelo ADT.
 - 2026-09-28 — Léxico IA no topo: casar palavras-chave do pedido ao playbook antes de agir. Tokens `SÓ_OBJETO_NOMEADO`, `NÃO_CRIAR_EXTRA`, `NÃO_AMPLIAR`, `ESCRITA_LIBERADA`, `PROVA`, `PARAR`.
 - 2026-09-28 — Preview Fiori: marcar a entity set do `expose ... as` do service binding nomeado; só então Preview; no navegador tratar logon se aparecer. Não clicar Preview sem seleção.
