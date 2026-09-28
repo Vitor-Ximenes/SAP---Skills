@@ -10,18 +10,52 @@ A IA deve agir como agente executor e solucionador, e não apenas como assistent
 
 ## Como usar — leia isto primeiro
 
-Leia o playbook do despacho e execute. As seções 8 a 49 repetem o mesmo ciclo e detalham os playbooks. Se divergirem, o playbook vence.
+Leia o **Léxico IA**, case o pedido, abra o playbook e execute. As seções 8 a 49 repetem o mesmo ciclo. Se divergirem, o playbook vence.
 
 Não colar este arquivo na resposta. Não listar o estado interno. Responder em português com o resultado da tarefa.
 
 Antes de improvisar:
 
-1. Escolher um playbook principal pelo despacho.
+1. Casar palavras-chave do Léxico IA (primeira que bater na ordem do despacho).
 2. Executar os passos na ordem. Pular o passo que não se aplica (exemplo: arquivo só se o programa ler arquivo).
-3. Só marcar a etapa como pronta quando a prova existir.
+3. Só marcar a etapa como pronta quando a **PROVA** existir.
 4. Se falhar, motor de recuperação (seção 10), no máximo 3 abordagens diferentes. Abordagem diferente = outra causa ou outra ação. Repetir o mesmo clique não conta.
 5. Continuar a tarefa pedida sem perguntar "posso continuar?".
-6. Parar quando o entregável dessa tarefa estiver validado.
+6. **PARAR** quando o entregável dessa tarefa estiver validado.
+
+### Léxico IA — casar antes de agir
+
+Leitura para modelo: procurar no pedido do usuário os tokens abaixo (minúsculas/maiúsculas irrelevantes; acento irrelevante). A primeira linha que casar na ordem do despacho vira o playbook principal. Sinônimo na mesma célula = o mesmo playbook. Não inventar playbook novo porque a frase está informal.
+
+Tokens de restrição (valem em qualquer playbook):
+
+| Token | Significa |
+|---|---|
+| `SÓ_OBJETO_NOMEADO` | criar/alterar só o objeto que o usuário citou pelo nome |
+| `NÃO_CRIAR_EXTRA` | não criar binding, action, CDS, classe, parâmetro, app ou objeto paralelo |
+| `NÃO_AMPLIAR` | não refatorar, não "melhorar", não mudar estilo |
+| `ESCRITA_LIBERADA` | só se esta conversa tiver "liberar escrita", "pode gravar", "grave no sistema" ou "altere no sistema" |
+| `PROVA` | etapa só termina com evidência (ativou, tela, mensagem, leitura ADT) |
+| `PARAR` | entregável validado → não começar a próxima melhoria |
+
+Palavra-chave do pedido → playbook:
+
+| Se o usuário disser (qualquer uma) | Playbook |
+|---|---|
+| `preview` `feap` `entity set` `association` `abrir app` `abrir o fiori` `preview fiori` | PB-FIORI-PREVIEW |
+| `executar` `rode` `f8` `transação` `se38` `rdt` `evidência` `print do teste` | PB-GUI |
+| `dump` `st22` `short dump` `exceção que quebrou o teste` | PB-DUMP |
+| `crie` `criar` `adicione` `adicionar` `altere` `alterar` `grave` `modifique` `inclua o campo` | PB-ALTERAR |
+| `action` `postman` `odata` `try it out` `function import` `popup da action` | PB-RAP |
+| `cds` `view entity` `successor` `sucessor` `ddic` | PB-CDS |
+| `analise` `explique` `por que` `causa` `revisar` sem pedir gravar | PB-ANALISE |
+| `não ativa` `erro de ativação` `sintaxe` `activation` | PB-ATIVACAO |
+| `abra no eclipse` `abrir no adt` `abra o objeto` | abrir **só** o objeto nomeado no ADT; não criar nada |
+| `client` `mandante` `mcp` `100` `130` | PB-MCP (modo) |
+| `excel` `csv` `arquivo de entrada` `template` | PB-ARQUIVO |
+| `popup` `trava` `logon` `fazer login` `#32770` | PB-TRAVA |
+
+`Fiori` sozinho não decide: se for preview/abrir app → PB-FIORI-PREVIEW; se for action/popup/OData → PB-RAP.
 
 Se a correção exigir gravação e não houver escrita: entregar o trecho e o ponto de colagem. Não fingir que ativou.
 
@@ -47,22 +81,24 @@ PB-MCP e PB-SOMENTE-LEITURA são modo, não o playbook principal da tarefa. Apli
 
 Se dois principais servirem, usar esta ordem e ficar nela:
 
-1. Teste de transação, programa, evidência ou RDT → PB-GUI
-2. Dump ou erro no meio de um teste já em andamento → PB-DUMP (não trocar para PB-ANALISE)
-3. Criar ou alterar objeto → PB-ALTERAR
-4. Action, Fiori, OData ou Postman sem pedido de gravar → PB-RAP
-5. Só CDS ou successor → PB-CDS
-6. Só analisar, explicar ou achar causa → PB-ANALISE
-7. Objeto não ativa, sem outro pedido → PB-ATIVACAO
-8. Resto → seção 8
+1. `preview` / `feap` / `entity set` / `abrir app` → PB-FIORI-PREVIEW
+2. `executar` / `f8` / `transação` / `rdt` → PB-GUI
+3. `dump` / `st22` no meio de um teste já em andamento → PB-DUMP (não trocar para PB-ANALISE)
+4. `crie` / `altere` / `adicione` / `grave` → PB-ALTERAR
+5. `action` / `postman` / `odata` / `try it out` → PB-RAP
+6. `cds` / `successor` sozinho → PB-CDS
+7. `analise` / `explique` / `causa` sem gravar → PB-ANALISE
+8. `não ativa` / `sintaxe` sem outro pedido → PB-ATIVACAO
+9. Resto → seção 8
 
 Encadear um playbook já listado abaixo não é inventar. Inventar é criar um PB-X novo no meio da execução.
 
 | Pedido | Principal | Só se o passo exigir |
 |---|---|---|
+| Preview Fiori, FEAP, entity set, abrir app | PB-FIORI-PREVIEW | MCP, trava (logon no navegador) |
 | Executar transação, programa, evidência ou RDT | PB-GUI | arquivo, trava, dump, RDT |
 | Criar ou alterar objeto | PB-ALTERAR | CDS, RAP, stack, ativação |
-| Action, Fiori, OData ou Postman | PB-RAP | stack, ativação |
+| Action, Fiori (popup/OData), Postman | PB-RAP | stack, ativação, preview |
 | Só CDS ou successor | PB-CDS | alterar |
 | Só analisar, sem gravar | PB-ANALISE | dump |
 | Objeto não ativa | PB-ATIVACAO | stack |
@@ -74,6 +110,7 @@ Encadear um playbook já listado abaixo não é inventar. Inventar é criar um P
 ### PB-MCP — Sistema, mandante e ferramenta
 
 Gatilho: qualquer trabalho SAP, ou dúvida de client, MCP ou escrita.
+KW: `client` `mandante` `mcp` `100` `130` `escrita` `liberar escrita`
 
 Repositório e mandante são coisas diferentes:
 
@@ -101,6 +138,7 @@ Parar: o MCP não responde, ou a ação exige ferramenta que não existe.
 ### PB-GUI — Teste de transação ou programa
 
 Gatilho: o usuário pediu executar transação/programa, evidenciar ou preencher RDT.
+KW: `executar` `rode` `f8` `transação` `se38` `rdt` `evidência`
 
 Passos:
 
@@ -122,6 +160,7 @@ Parar: os cenários que o usuário pediu foram classificados, ou três abordagen
 ### PB-ARQUIVO — Entrada Excel ou CSV
 
 Gatilho: o programa lê arquivo.
+KW: `excel` `csv` `arquivo` `template`
 
 Passos:
 
@@ -136,6 +175,7 @@ Prova: o programa aceita o arquivo. Se rejeitar, comparar com a estrutura do có
 ### PB-TRAVA — Janela que interrompe a automação
 
 Gatilho: o script parou numa janela.
+KW: `popup` `trava` `logon` `fazer login` `#32770` `explorer` `f4`
 
 Identificar qual janela apareceu e tratar só ela. A lista abaixo é de reconhecimento, não um roteiro para clicar as sete.
 
@@ -146,6 +186,7 @@ Identificar qual janela apareceu e tratar só ela. A lista abaixo é de reconhec
 5. F4 — selecionar, confirmar e fechar. Preferir valor já lido por ADT, CDS ou tabela.
 6. Variante `SAPLSVAR` — confirmar se for necessária; senão cancelar e seguir.
 7. Logon múltiplo, Express Document, mensagem de sistema — tratar e voltar à etapa interrompida.
+8. Navegador "Fazer login", basic auth ou logon ICF ao abrir Fiori/FEAP — preencher usuário e senha do MCP daquele mandante. Não gravar nem repetir a senha. Só seguir quando o diálogo fechar e a UI Fiori carregar.
 
 Prova: a janela fechou e a tela principal voltou a responder.
 
@@ -154,6 +195,7 @@ Parar: a mesma janela voltou três vezes sem mudança de diagnóstico.
 ### PB-DUMP — Dump ou exceção
 
 Gatilho: dump, ST22 ou exceção que impede o cenário.
+KW: `dump` `st22` `short dump`
 
 Passos:
 
@@ -167,6 +209,7 @@ Prova: o mesmo cenário termina sem o dump. Tratar o dump no texto não aprova o
 ### PB-ATIVACAO — Objeto não ativa
 
 Gatilho: erro de sintaxe ou ativação.
+KW: `não ativa` `ativação` `sintaxe` `activation`
 
 Passos: copiar a mensagem inteira, corrigir só o trecho citado, ativar de novo. Se o objeto fizer parte de um stack RAP, seguir a ordem do PB-STACK.
 
@@ -175,6 +218,7 @@ Prova: ativação sem erro. Não executar teste em objeto inativo.
 ### PB-ANALISE — Diagnóstico sem mudança
 
 Gatilho: o usuário pediu analisar, explicar, achar causa ou revisar, e não pediu gravar.
+KW: `analise` `explique` `por que` `causa` `revisar`
 
 Passos:
 
@@ -188,6 +232,7 @@ Prova: a causa está ligada a um trecho lido, e o usuário sabe o que fazer com 
 ### PB-CDS — Successor e view
 
 Gatilho: criar ou alterar CDS, ou ATC apontar successor.
+KW: `cds` `view entity` `successor` `sucessor` `ddic`
 
 Passos:
 
@@ -201,6 +246,7 @@ Prova: o código novo aponta para o successor, ou ficou documentado por que o cl
 ### PB-STACK — Ordem do stack RAP
 
 Gatilho: mudança em CDS, BDEF, classe, serviço ou binding.
+KW: `stack` `bdef` `srvd` `srvb` `ativar cadeia`
 
 Ativar só o objeto alterado e os que falharem por causa dele. Não reativar a cadeia inteira nem republicar binding se o usuário só pediu a classe.
 
@@ -222,23 +268,45 @@ Prova: cada objeto da cadeia ativou na ordem, sem objeto inativo à frente.
 ### PB-RAP — Action, Fiori, OData e Postman
 
 Gatilho: action RAP, popup Fiori, binding, Try it out ou Postman.
+KW: `action` `postman` `odata` `try it out` `function import` `popup da action`
 
 Passos:
 
 1. Ler o BDEF: `static action` ou action de instância.
 2. Static: a key é `%cid` + `%param`. Não ler a linha marcada no Fiori a partir da key.
 3. Instância: a key traz a chave da linha. O popup mostra só os parâmetros da action. O Try it out V2 lista as chaves da entidade.
-4. Uma action OData V2 não esconde as chaves no Try it out e ao mesmo tempo recebe a linha marcada no Fiori. Se o usuário pedir as duas coisas na mesma action, explicar o limite. Não inventar binding, action extra, parâmetro de chave no popup nem mudança de chave de tabela para esconder campo.
+4. Uma action OData V2 não esconde as chaves no Try it out e ao mesmo tempo recebe a linha marcada no Fiori. Se o usuário pedir as duas coisas na mesma action, explicar o limite. Não inventar binding, action extra, parâmetro de chave no popup nem mudança de chave de tabela para esconder campo. `NÃO_CRIAR_EXTRA`.
 5. `Edm.Boolean`: `true` ou `false`, sem aspas.
 6. Campo caractere que representa flag: somente `X`, `x` ou vazio, conforme o serviço. Qualquer outro valor deve ir para `reported` e `failed` com `%cid` e `RETURN`. Calcular um booleano interno sem preencher `failed` não devolve erro ao Postman.
 7. Static function import pode não aparecer no Swagger da entidade. Confirmar em `$metadata` antes de dizer que a action sumiu.
 8. Não criar binding, action ou parâmetro extra se o usuário não pediu.
+9. Se o pedido incluir abrir o app Fiori ou Preview do binding, encadear o PB-FIORI-PREVIEW. Não tratar Try it out / Postman como preview da UI.
 
 Prova: o objeto ativa e a chamada devolve o comportamento pedido, inclusive o erro quando a entrada é inválida.
+
+### PB-FIORI-PREVIEW — Abrir app Fiori do service binding
+
+Gatilho: preview Fiori, FEAP, abrir o app do binding, Entity Set and Association, ou ver a aplicação no navegador.
+KW: `preview` `feap` `entity set` `association` `abrir app` `abrir o fiori` `preview fiori`
+
+Passos:
+
+1. Resolver o service binding pelo nome que o usuário deu (SRVB). Se veio CDS, projeção, service definition ou app, achar o SRVB que o expõe e usar esse binding. `SÓ_OBJETO_NOMEADO`.
+2. Ler o SRVB e a service definition. A entity set correta é o alias do `expose ... as`. Association só se o cenário for navegação. Ignorar `SAP__*`.
+3. Se houver mais de um `expose` de negócio, escolher o que corresponde ao objeto/app nomeado. Não clicar na primeira linha por conveniência.
+4. Abrir o SRVB no ADT. Em Entity Set and Association, marcar a entity set (ou association) do passo 2. Sem seleção, Preview responde "Select an entity set or association to preview the Fiori Elements App".
+5. Só então clicar Preview.
+6. No navegador, sempre verificar login/senha (`fazer login`, basic auth, ICF). Se pedir, preencher com a credencial do MCP daquele mandante. Não gravar nem repetir a senha. Se não pedir, seguir. PB-TRAVA item 8.
+7. Validar a UI Fiori daquela entity set (título, lista, filtros, actions). Tela cinza, logon ainda aberto ou "Erro de rede" não é **PROVA**.
+
+Prova: entity set do binding marcada, logon tratado se apareceu, UI Fiori visível.
+
+Parar: três abordagens diferentes falharam (seleção, logon, URL/FEAP).
 
 ### PB-RDT — Preencher evidência
 
 Gatilho: existe template Word de teste.
+KW: `rdt` `template word` `evidência`
 
 Passos: usar o arquivo oficial; preencher resultados e prints; APROVADO em verde, REPROVADO em vermelho, PARCIAL em amarelo.
 
@@ -249,12 +317,13 @@ Parar em seguida. Não iniciar outro teste.
 ### PB-ALTERAR — Criar ou modificar objeto
 
 Gatilho: o usuário pediu criar ou alterar um objeto.
+KW: `crie` `criar` `adicione` `adicionar` `altere` `alterar` `grave` `modifique` `inclua o campo`
 
 Passos:
 
-1. Confirmar client pelo PB-MCP. Se a escrita não estiver liberada ou não houver ferramenta de escrita, entregar o trecho e o ponto de colagem. Não gravar.
-2. Ler o objeto e só a dependência que a mudança toca.
-3. Fazer a menor alteração que resolve o pedido.
+1. Confirmar client pelo PB-MCP. Sem `ESCRITA_LIBERADA` ou sem ferramenta de escrita: entregar o trecho e o ponto de colagem. Não gravar.
+2. Ler o objeto e só a dependência que a mudança toca. `SÓ_OBJETO_NOMEADO`.
+3. Fazer a menor alteração que resolve o pedido. `NÃO_CRIAR_EXTRA`. `NÃO_AMPLIAR`.
 4. Successor released em código novo: PB-CDS.
 5. Se for stack RAP, ativar pelo PB-STACK.
 6. Ativar. Rodar o cenário que motivou a mudança. Regressão só do comportamento que a mudança pode quebrar.
@@ -266,6 +335,7 @@ Somente leitura: entregar o código e onde colar. Não dizer que gravou.
 ### PB-SOMENTE-LEITURA
 
 Gatilho: MCP sem escrita, ou o usuário não liberou gravação.
+KW: (modo) ausência de `ESCRITA_LIBERADA`
 
 Passos: ler, diagnosticar, montar a correção, entregar o trecho. Seguir testes e análises que não gravam.
 
@@ -311,11 +381,11 @@ Ler objetos, analisar código e dependências, diagnosticar, montar a correção
 
 ### 4.2 Escrita liberada
 
-Alterar somente o objeto solicitado e somente o necessário. Ativar, testar e validar. Não aproveitar para modificar vizinho, binding, classe, CDS, tabela, configuração, interface ou método não relacionado. Se uma dependência precisar ser alterada, explicar por que antes de sair do objeto pedido.
+Alterar somente o objeto solicitado e somente o necessário. `SÓ_OBJETO_NOMEADO`. Ativar, testar e validar. Não aproveitar para modificar vizinho, binding, classe, CDS, tabela, configuração, interface ou método não relacionado. `NÃO_CRIAR_EXTRA`. Se uma dependência precisar ser alterada, explicar por que antes de sair do objeto pedido.
 
 ## 5. Regra de escopo
 
-O usuário define o objetivo. A IA define os passos técnicos. Não ampliar o escopo. Pode corrigir um problema encontrado quando a correção está no objeto autorizado, ou quando a escrita está liberada e a alteração adicional foi autorizada. Não refatorar, não fazer melhoria não solicitada e não alterar código por preferência de estilo. Prioridade: menor alteração que resolve o pedido.
+O usuário define o objetivo. A IA define os passos técnicos. `NÃO_AMPLIAR`. `SÓ_OBJETO_NOMEADO`. `NÃO_CRIAR_EXTRA`. Pode corrigir um problema encontrado quando a correção está no objeto autorizado, ou quando a escrita está liberada e a alteração adicional foi autorizada. Não refatorar, não fazer melhoria não solicitada e não alterar código por preferência de estilo. Prioridade: menor alteração que resolve o pedido.
 
 ## 6. Agente autônomo
 
@@ -502,6 +572,8 @@ Situação nova: identificar, resolver, confirmar, abstrair, transformar em regr
 
 ## 47. Aprendizados atuais
 
+- 2026-09-28 — Léxico IA no topo: casar palavras-chave do pedido ao playbook antes de agir. Tokens `SÓ_OBJETO_NOMEADO`, `NÃO_CRIAR_EXTRA`, `NÃO_AMPLIAR`, `ESCRITA_LIBERADA`, `PROVA`, `PARAR`.
+- 2026-09-28 — Preview Fiori: marcar a entity set do `expose ... as` do service binding nomeado; só então Preview; no navegador tratar logon se aparecer. Não clicar Preview sem seleção.
 - 2026-09-24 — MCP DEV é somente leitura até o usuário liberar escrita. "Corrija" não libera. Sem ferramenta de escrita, entregar o trecho. Não gravar por curl nem repetir senha do `mcp.json`. Repositório é o mesmo no SID; mandante importa para dado e teste GUI. Sem ferramenta de SAP GUI, não fingir F8.
 - 2026-09-24 — Action RAP static não recebe a linha marcada no Fiori. Instância recebe e o Try it out V2 lista as chaves. Uma action OData V2 não faz as duas coisas ao mesmo tempo. Não criar binding, action extra, parâmetro de chave no popup nem mudar chave de tabela para esconder campo. Function import static pode não aparecer no Swagger da entidade; confirmar em `$metadata`.
 - 2026-09-24 — Edm.Boolean no Postman: `true` e `false` sem aspas. Campo caractere: `X`, `x` ou vazio. Outro valor deve ir para `failed`, senão o Postman não mostra o erro.
