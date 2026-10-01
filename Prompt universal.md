@@ -188,17 +188,18 @@ Passos:
 1. Resolver client e ferramenta pelo PB-MCP.
 2. Ler o programa inteiro relevante (seção 12) antes do F8.
 3. Simular o cenário no código (seção 13). Se o caminho não chega no trecho pedido, trocar a massa ou o rádio antes de executar.
-4. Se o programa ler arquivo, montar pelo PB-ARQUIVO. Se não ler, pular este passo.
-5. Abrir a transação e conferir o mandante no rodapé. Print do ambiente quando houver evidência. Sem ferramenta de SAP GUI, parar e dizer isso. Não inventar resultado de F8.
-6. Preencher parâmetros. Print antes do F8.
-7. Executar e tratar travas com o PB-TRAVA.
-8. Comparar status bar, ALV, arquivo e dump com o resultado que o código produz.
-9. Classificar APROVADO, REPROVADO ou PARCIAL.
-10. Se houver template RDT, seguir o PB-RDT.
+4. **Antes do F8, achar dados que existam e funcionem no mandante do teste** (SE16N/CDS/`TABLE_QUERY`, F4 da tela, massa já aprovada, template oficial). Não inventar empresa, documento, PEP, fornecedor, arquivo ou chave "de exemplo". Se a massa falhar, trocar e repetir — não parar no primeiro erro de dado.
+5. Se o programa ler arquivo, montar pelo PB-ARQUIVO. Se não ler, pular este passo.
+6. Abrir a transação e conferir o mandante no rodapé. Print do ambiente quando houver evidência. Sem ferramenta de SAP GUI, parar e dizer isso. Não inventar resultado de F8.
+7. Preencher parâmetros com a massa encontrada. Print antes do F8.
+8. Executar e tratar travas com o PB-TRAVA.
+9. Comparar status bar, ALV, arquivo e dump com o resultado que o código produz. Se falhou por dado, voltar ao passo 4 com outra massa e repetir até o cenário pedido fechar com prova.
+10. Classificar APROVADO, REPROVADO ou PARCIAL — APROVADO só com print + resultado conferido. Não entregar PARCIAL por não ter procurado dado válido.
+11. Se houver template RDT, seguir o PB-RDT.
 
-Prova: o resultado confere com o código e a evidência permite reconstruir o teste.
+Prova: o resultado confere com o código e a evidência permite reconstruir o teste; a massa usada existe no mandante (ou é validação segura deliberada).
 
-Parar: os cenários que o usuário pediu foram classificados, ou três abordagens diferentes falharam. Não inventar rádio ou checkbox extra.
+Parar: os cenários que o usuário pediu foram classificados com prova, ou três abordagens *diferentes de causa* falharam depois de tentar massas existentes. Não inventar rádio ou checkbox extra. Cada rodada de teste nova esquece a anterior (prints/massas/TUs) e começa do zero.
 
 ### PB-ARQUIVO — Entrada Excel ou CSV
 
@@ -326,7 +327,7 @@ Passos:
 6. Campo caractere que representa flag: somente `X`, `x` ou vazio, conforme o serviço. Qualquer outro valor deve ir para `reported` e `failed` com `%cid` e `RETURN`. Calcular um booleano interno sem preencher `failed` não devolve erro ao Postman.
 7. Static function import pode não aparecer no Swagger da entidade. Confirmar em `$metadata` antes de dizer que a action sumiu.
 8. Não criar binding, action ou parâmetro extra se o usuário não pediu.
-9. Lógica no behavior pool: `READ`/`MODIFY ENTITIES` `IN LOCAL MODE`; erro em `failed` + `reported` com `%tky` (ou `%cid` se static). Alias de `failed-<alias>` em minúsculas como no BDEF. Não fazer `SELECT` direto na persistência em ABAP Cloud.
+9. Lógica no behavior pool: `READ`/`MODIFY ENTITIES` `IN LOCAL MODE`; erro em `failed` + `reported` com `%tky` (ou `%cid` se static). Alias de `failed- ` em minúsculas como no BDEF. Não fazer `SELECT` direto na persistência em ABAP Cloud.
 10. Determinação/validação nova no BDEF existente: PB-RAP-LOGIC. Stack RAP do zero: PB-RAP-GERAR.
 11. Se o pedido incluir abrir o app Fiori ou Preview do binding, encadear o PB-FIORI-PREVIEW. Não tratar Try it out / Postman como preview da UI.
 
@@ -382,7 +383,6 @@ Prova: ativou e o cenário que falhava passa.
 
 Somente leitura: entregar o código e onde colar. Não dizer que gravou.
 
-
 ### PB-CLEAN-CORE — Classificar código customizado A–D
 
 Gatilho: classificar pacote/objeto para Clean Core, relatório de prontidão cloud, auditoria Nível A–D, ou ATC ABAP Cloud Readiness.
@@ -417,7 +417,6 @@ Passos:
 Prova: cada objeto Z/Y do escopo tem nível A–D com evidência (ATC, CR ou de-para). Sem evidência = incompleto, não “Nível A”.
 
 Parar: ATC skip em `$TMP` sem outro evidência; MCP docs/CR indisponível — classificar o que foi lido e marcar o gap.
-
 
 ### PB-SQL — OData / SQL lento
 
@@ -462,7 +461,7 @@ Passos:
 
 1. Probe RAP (`SYSTEM`/`COMPONENTS`). Sem RAP, parar. Pacote: o nomeado e permitido; `$TMP` só se o usuário pedir. Sem transporte em pacote transportável, parar.
 2. Padrão silencioso: managed, UUID, um root, CRUD, OData V4, `strict ( 2 )`. Draft só se o usuário pediu UI Fiori editável. On-prem 7.5x: `syuname`/`timestampl`, flag `abap.char(1)`, `projection;` no BDEF de projeção.
-3. Nomes SAP: tabela `Z<ENT>_D`, `ZI_`, `ZC_`, `ZBP_I_`, `ZUI_…_O4`. Copiar convenção do pacote se já existir RAP lá (researched).
+3. Nomes SAP: tabela `Z _D`, `ZI_`, `ZC_`, `ZBP_I_`, `ZUI_…_O4`. Copiar convenção do pacote se já existir RAP lá (researched).
 4. `NÃO_CRIAR_EXTRA`: um binding, uma action set. Produção: apresentar a tabela de artefatos e só gravar com `ESCRITA_LIBERADA`.
 5. Ativar pelo PB-STACK. Pool: `scaffold_rap_handlers` + `edit_method`, não regravar a classe inteira se o save genérico falhar.
 
