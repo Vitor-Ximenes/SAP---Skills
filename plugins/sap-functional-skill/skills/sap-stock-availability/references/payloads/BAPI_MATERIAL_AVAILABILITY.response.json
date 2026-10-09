@@ -1,0 +1,27 @@
+{
+  "av_qty_plt": 0,
+  "dialogflag": "N",
+  "endleadtme": "2026-09-28",
+  "return": {
+    "type": "",
+    "code": "",
+    "message": ""
+  },
+  "wmdvex": [
+    {
+      "bdcnt": "",
+      "req_date": "2026-09-26",
+      "req_qty": 1.0,
+      "com_date": "2026-09-26",
+      "com_qty": 1.0
+    }
+  ],
+  "wmdvsx": [
+    {
+      "req_date": "2026-09-26",
+      "req_qty": 1.0,
+      "delkz": "",
+      "yline": 1
+    }
+  ]
+}

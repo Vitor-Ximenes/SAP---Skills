@@ -1,0 +1,14 @@
+{
+  "plant": "5260",
+  "material": "P0217636AB",
+  "unit": "EA",
+  "check_rule": "A",
+  "wmdvsx": [
+    {
+      "req_date": "20260926",
+      "req_qty": 1.0,
+      "delkz": "",
+      "yline": 1
+    }
+  ]
+}
