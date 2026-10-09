@@ -1,0 +1,21 @@
+# macOS
+.DS_Store
+
+# Editors and IDEs
+.idea/
+.vscode/
+*.iml
+*.swp
+*~
+
+# Local scratch / logs
+*.log
+tmp/
+build/
+out/
+
+# Local environment files that may contain tenant-specific values or secrets.
+# These must never be committed.
+.env
+.env.*
+*.local.md

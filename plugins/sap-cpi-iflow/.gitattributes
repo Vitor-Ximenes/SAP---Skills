@@ -1,0 +1,11 @@
+# Normalise line endings so the package renders identically on every platform.
+* text=auto eol=lf
+
+*.md   text eol=lf
+*.groovy text eol=lf
+*.json text eol=lf
+
+# Binary assets, if any are ever added.
+*.png binary
+*.jpg binary
+*.pdf binary

@@ -1,0 +1,23 @@
+name: Validate knowledge package
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  consistency:
+    name: Markdown and Groovy consistency
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Run the consistency checks
+        run: python3 scripts/check-consistency.py
